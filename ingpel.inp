@@ -1,0 +1,35 @@
+ID ingpel 900105 134 21
+fs 22 70
+opc debug
+# ct inv
+box 00 00  24 80
+
+#Ahora recien creo el formulario
+
+cf  03  34  24 Ingresar pelicula
+cf  04  34  24 +++++++++++++++++
+
+cf  06  05  16 Nombre Pelicula:
+ce  06  23  20 000 AN 0
+
+cf  07  05  08 Genero:
+ce  07  23  20 37 AN 0
+
+cf  08  05  06 Pais:
+ce  08  23  20 66 AN 0
+
+cf  09  05  06 Anio:
+ce  09  23  04 92 AN 0
+
+cf  10  05  07 Stock:
+ce  10  23  20 102 AN 0
+
+cf  11  05  07 Precio:
+ce  11  23  05 129 AN 0
+
+cm  02  05  21 0
+
+tm 01 18 Pelicula Ingresada
+tm 02 21 Faltan Datos
+
+ff

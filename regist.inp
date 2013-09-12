@@ -1,0 +1,30 @@
+ID regist 900101 98 29
+fs 22 70
+#ocp debug
+#ct inv
+box 00 00 24 80
+# Formulario de buscar usuario
+
+cf 03 34 21 Buscar Usuario
+cf 04 34 21 ++++++++++++++
+
+cf 07 05 05 Rut:
+ce 07 20 08 000 AN 0
+cf 07 30 35 Ex: 17083021 (sin puntos ni guion)
+
+cf 08 05 08 Nombre:
+ce 08 20 20 008 AN 0
+  
+cf 09 05 10 Apellido: 
+ce 09 20 20 028 AN 0
+
+cf 10 05 06 Mail:
+ce 10 20 50 048 AN 0
+
+cm 02 05 29 00
+
+tm 01 32 Rut ya esta Registrado!
+tm 02 13 Faltan datos!
+tm 03 29 Usuario resgitrado con Exito!
+
+ff

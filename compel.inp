@@ -1,0 +1,32 @@
+ID compel 900107 76 21
+fs 22 70
+opc debug
+# ct inv
+box 00 00  24 80
+
+#Ahora recien creo el formulario
+
+cf  03  34  23 Comprar pelicula
+cf  04  34  23 ++++++++++++++++
+
+cf  06  05  05 Rut:
+ce  06  24  08 000 AN 0
+
+cf  07  05  07 Clave:
+ce  07  24  10 13 AN 0
+
+cf  08  05  19 Codigo Pelicula:
+ce  08  24  10 42 AN 0
+
+cf  11  05  07 Precio:
+ce  11  23  05 71  AN 0
+
+cm  02  05  21 0
+
+tm 01 12 No hay stock
+tm 02 21 No coinside el codigo
+tm 03 15 Compra exitosa
+tm 04 15 Faltan datos
+tm 05 19 No existe pelicula
+
+ff

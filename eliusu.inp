@@ -1,0 +1,18 @@
+ID eliusu 900102 8 22
+fs 22 70
+#ocp debug
+#ct inv
+box 00 00 24 80
+# Formulario de Eliminar usuarios
+cf 03 34 21 Eliminar Usuario
+cf 04 34 21 ++++++++++++++++
+
+cf 07 05 05 RUT:
+ce 07 15 08 000 NA 0
+cf 07 30 35 Ex: 17083021 (sin puntos ni guion)
+
+
+cm 02 05 22 00
+tm 01 19 Usuario Eliminado! 
+tm 02 22 Usuario no Existente!
+ff

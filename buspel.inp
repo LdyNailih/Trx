@@ -1,0 +1,35 @@
+ID buspel 900105 10 111
+fs 22 70
+#ocp debug
+#ct inv
+box 00 00 24 80
+#Cosdigo de buscar pelicula
+
+cf 03 34 21 Buscar Pelicula
+cf 04 34 21 +++++++++++++++
+
+cf 07 05 17 Codigo Pelicula:
+ce 07 27 10 000 NA 0
+
+cf 08 05 08 Nombre:
+cs 08 27 20 000 AN 0
+
+cf 09 05 08 Genero:
+cs 09 27 20 020 AN 0
+
+cf 10 05 07 Stock:
+cs 10 27 20 040 NE 0
+
+cf 11 05 06 Pais:
+cs 11 27 20 060 AN 0
+
+cf 12 05 05 año: 
+cs 12 27 04 080 NE 0
+
+cf 12 05 07 Precio:
+cs 12 27 05 084 NE 0
+
+cm 02 05 22 089
+tm 01 22 La Pelicula no existe!
+
+ff

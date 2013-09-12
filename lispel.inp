@@ -1,0 +1,16 @@
+ID lispel 900109 00 0
+fs 22 70
+opc debug
+# ct inv
+box 00 00 24 80
+
+#Ahora recien creo el formulario
+
+cf  03  23  31 Listado de todas las peliculas
+cf  04  23  31 ++++++++++++++++++++++++++++++
+
+cf 06 05 08 1-
+cf 07 05 08 2-
+cf 08 05 08 3-
+
+ff
