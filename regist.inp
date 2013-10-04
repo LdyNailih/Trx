@@ -3,10 +3,10 @@ fs 22 70
 #ocp debug
 #ct inv
 box 00 00 24 80
-# Formulario de buscar usuario
+# Formulario de registrar usuario
 
-cf 03 34 21 Buscar Usuario
-cf 04 34 21 ++++++++++++++
+cf 03 34 21 Registrar Usuario
+cf 04 34 21 +++++++++++++++++
 
 cf 07 05 05 Rut:
 ce 07 20 08 000 AN 0
@@ -21,7 +21,7 @@ ce 09 20 20 028 AN 0
 cf 10 05 06 Mail:
 ce 10 20 50 048 AN 0
 
-cm 02 05 29 00
+cm 02 05 02 00
 
 tm 01 32 Rut ya esta Registrado!
 tm 02 13 Faltan datos!
