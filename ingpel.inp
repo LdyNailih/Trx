@@ -27,9 +27,9 @@ ce  10  23  20 102 AN 0
 cf  11  05  07 Precio:
 ce  11  23  05 129 AN 0
 
-cm  02  05  21 0
+cm  02  05  02 00
 
 tm 01 18 Pelicula Ingresada
-tm 02 21 Faltan Datos
+tm 02 13 Faltan Datos
 
 ff
