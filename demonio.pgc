@@ -139,7 +139,7 @@ int main() {
                 memset(precio, 0, sizeof precio);
 
             //Recibimos los datos desde el .c
-                sscanf(mensaje.texto.datos, "%20c%20c%20c%4c%20c%5c", nombre,
+                sscanf(mensaje.texto.datos, "%6c%20c%20c%20c%4c%20c%5c", formulario, nombre,
                 genero, pais, anio, stock, precio);
 
             //Guardamos la variable en la estructura 
@@ -230,7 +230,7 @@ anio, stock, precio) VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_st
                 memset(genero, 0 , sizeof clave);
 
             //Recibimos los datos desde el .c
-                sscanf(mensaje.texto.datos, "%8c%8c",rut,clave); // agregar formulario 
+                sscanf(mensaje.texto.datos, "%6c%8c%20c",formulario, rut,clave); // agregar formulario 
 
             //Guardamos la variable en la estructura
                 sprintf(SQL_rut.arr,"%s", rut);
