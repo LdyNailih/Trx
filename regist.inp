@@ -1,4 +1,4 @@
-ID regist 900101 98 29
+ID regist 900101 118 29
 fs 22 70
 #ocp debug
 #ct inv
@@ -22,7 +22,7 @@ cf 10 05 06 Mail:
 ce 10 20 50 048 AN 0
 
 cf 10 05 07 Clave:
-ce 10 20 20 068 AN 0
+ce 10 20 20 098 AN 0
 
 cm 15 10 02 00
 
