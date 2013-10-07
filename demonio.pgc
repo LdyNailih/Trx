@@ -347,8 +347,7 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 					
 					EXEC SQL SELECT nombre INTO :SQL_nombre_usuario FROM usuario WHERE rut=:SQL_rut; 
 					EXEC SQL COMMIT;
-					
-					//printf("fail!");
+				
 
 					memset( &respuesta, 0, sizeof respuesta);
 					sprintf(respuesta.texto.datos, "%s", "01");
@@ -360,7 +359,7 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
 
 					// Insertamos en la BdD
-					EXEC SQL INSERT INTO usuario (nombre,apellido,rut,clave,mail) VALUES (:SQL_nombre_usuario, :SQL_apellido, :SQL_rut, :SQL_clave, :SQL_mail);
+					EXEC SQL INSERT INTO usuario (nombre, apellido, rut, clave, mail) VALUES (:SQL_nombre_usuario, :SQL_apellido, :SQL_rut, :SQL_clave, :SQL_mail);
 					EXEC SQL COMMIT;
 
 					// Revisar en caso de error en la consulta
@@ -385,7 +384,7 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
                                 		msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
 					}
-
+//ping
 				} // Fin else
 
 			}//Fin Formulario regist
