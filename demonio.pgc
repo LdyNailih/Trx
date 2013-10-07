@@ -239,14 +239,14 @@ anio, stock, precio) VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_st
                 SQL_clave.len=strlen(SQL_clave.arr);
 
              //Verificamos si el usuario ya existe
-                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM login 
+                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario
 WHERE
                 rut=:SQL_rut;
 
                 if( SQL_count != 0)
                 {
                     printf("Rut ya existente\n");
-                    EXEC SQL SELECT nombre INTO :SQL_nombre FROM login 
+                    EXEC SQL SELECT nombre INTO :SQL_nombre FROM usuario 
 WHERE
                     rut=:SQL_rut;
 
@@ -346,7 +346,7 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 					
 					printf("El alumno ya fue registrado\n");
 					
-					EXEC SQL SELECT nombre INTO :SQL_nombre_usuario FROM usuario WHERE rut=:SQL_rut; // asumo bdd en minusculas
+					EXEC SQL SELECT nombre INTO :SQL_nombre_usuario FROM usuario WHERE rut=:SQL_rut; 
 					EXEC SQL COMMIT;
 					
 					printf("Y sus datos son: Nombre: %s , Rut: %d \n\n", SQL_nombre_usuario.arr, SQL_rut);
@@ -389,7 +389,7 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
 				} // Fin else
 
-			}//Fin Formulario ingtra
+			}//Fin Formulario regist
 
 }
 }
