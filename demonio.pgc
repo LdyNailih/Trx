@@ -322,6 +322,7 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
                                 sscanf(mensaje.texto.datos, "%6c%8c%20c%20c%50c%20c", formulario, rut, nombre, apellido, mail, clave);
                              
 
+
                              //Guardamos la variable en la estructura arr de los char
 								sprintf(SQL_rut.arr,"%s", rut);
 								SQL_rut.len=strlen(SQL_rut.arr);
@@ -343,11 +344,12 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
 				if( SQL_count != 0) {
 					
-					printf("ya fue registrado\n");
+					printf("El alumno ya fue registrado\n");
 					
 					EXEC SQL SELECT nombre INTO :SQL_nombre_usuario FROM usuario WHERE rut=:SQL_rut; 
 					EXEC SQL COMMIT;
-				
+					
+printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut.arr);
 
 					memset( &respuesta, 0, sizeof respuesta);
 					sprintf(respuesta.texto.datos, "%s", "01");
@@ -358,8 +360,8 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 				} else {
 
 
-					// Insertamos en la BdD
-					EXEC SQL INSERT INTO usuario (nombre, apellido, rut, clave, mail) VALUES (:SQL_nombre_usuario, :SQL_apellido, :SQL_rut, :SQL_clave, :SQL_mail);
+					// Insertamos el alumno en la BdD
+					EXEC SQL INSERT INTO usuario (nombre,apellido,rut,clave,mail) VALUES (:SQL_nombre_usuario, :SQL_apellido, :SQL_rut, :SQL_clave, :SQL_mail);
 					EXEC SQL COMMIT;
 
 					// Revisar en caso de error en la consulta
@@ -368,23 +370,23 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 						printf("\nERROR en la consulta SQL\n\n");
 
 						memset(&respuesta,0,sizeof respuesta);
-                                                sprintf(respuesta.texto.datos, "%s", "02");
+                                                sprintf(respuesta.texto.datos, "%s", "03");
                                                 respuesta.mtype=pid_destino;
                                                 respuesta.texto.pid=pid;
                                                 msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
 					} else {			
 
-						printf("\nResgitrado con exito\n\n");	
+						printf("\nAlumno ingresado con exito\n\n");	
                             	
 						memset(&respuesta,0,sizeof respuesta);
-	                        		sprintf(respuesta.texto.datos, "%s", "03");
+	                        		sprintf(respuesta.texto.datos, "%s", "01");
        	                        		respuesta.mtype=pid_destino;
                                	 		respuesta.texto.pid=pid;
                                 		msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
 					}
-//ping
+
 				} // Fin else
 
 			}//Fin Formulario regist
