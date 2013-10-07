@@ -24,7 +24,7 @@ ce 10 20 50 048 AN 0
 cf 10 05 07 Clave:
 ce 10 20 20 068 AN 0
 
-cm 02 05 02 00
+cm 15 10 02 00
 
 tm 01 32 Rut ya esta Registrado!
 tm 02 13 Faltan datos!

@@ -213,13 +213,13 @@ anio, stock, precio) VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_st
          if (strcmp(formulario, "loginn")==0){
    printf(" --------------------   \n   El proceso Es: Login\n  -------------------\n\n");
                 char rut[8];
-                char clave[8];
+                char clave[8];   // cambiar claves
             //Limpiamos los Strings
                 memset(nombre, 0 , sizeof rut);
                 memset(genero, 0 , sizeof clave);
 
             //Recibimos los datos desde el .c
-                sscanf(mensaje.texto.datos, "%8c%8c",rut,clave);
+                sscanf(mensaje.texto.datos, "%8c%8c",rut,clave); // agregar formulario 
 
             //Guardamos la variable en la estructura
                 sprintf(SQL_rut.arr,"%s", rut);
@@ -279,6 +279,176 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
                 } // Fin else
 
             } //Fin Formulario
+			
+			/*************************************************************************
+                        Registrar Personas
+                         *************************************************************************/
+
+                        if (strcmp(formulario, "regist")==0){
+
+                                printf("   --------------------   \n   El proceso Es: Ingreso de Personal\n   --------------------\n\n");
+
+                                char personal_nombre[20];
+                                char personal_apellido[20];
+                                char personal_rut[8];
+                                char personal_mail[50];
+                                char personal_clave[20];
+                                
+                                int cont=0;
+                                int aux=0;
+                                int val=0;
+                                //Limpiamos los Strings
+
+
+                                memset (personal_nombre, 0, sizeof personal_nombre);
+                                memset (personal_apellido, 0, sizeof personal_apellido);
+                                memset (personal_rut, 0, sizeof personal_rut);
+                                memset (personal_mail, 0, sizeof mail);
+                                memset (personal_clave, 0, sizeof clave);
+                                                     
+
+                                //Recibimos los datos desde el .c
+
+                                printf("Recibi: %s\n",mensaje.texto.datos);
+                                sscanf(mensaje.texto.datos, "%6c%8c%20c%20c%50c%20c", formulario, rut, nombre, apellido, mail, clave);
+                                int conta=0;
+                                     for (conta=0;conta<=strlen(personal_mensaje)-1;conta++){
+                                          if (personal_mensaje[conta]=='#'){
+                                              personal_mensaje[conta]=' ';
+                                               }
+                                                }
+                                
+                                
+
+                                for (cont=0;cont<=strlen(personal_mensaje)-1;cont++){
+                                    if (personal_mensaje[cont]=='-'){
+                                       val=val+1;
+                                       cont=cont+1;
+                                       aux=0;
+                                       }
+                                    if (val==0){
+                                       personal_nombre[aux]=personal_mensaje[cont];
+                                       aux=aux+1;
+                                       }
+                                     if (val==1){
+                                       personal_apellido[aux]=personal_mensaje[cont];
+                                       aux=aux+1;
+                                       }   
+                                    if (val==2){
+                                       personal_rut[aux]=personal_mensaje[cont];
+                                       aux=aux+1;
+                                       }
+                                    if (val==3){
+                                       personal_direccion[aux]=personal_mensaje[cont];
+                                       aux=aux+1;
+                                       }
+                                    if (val==4){
+                                       personal_sueldo_str[aux]=personal_mensaje[cont];
+                                       aux=aux+1;
+                                       }
+                                    if (val==5){
+                                       personal_telefono_str[aux]=personal_mensaje[cont];
+                                       aux=aux+1;
+                                       }  
+                                     if (val==6){
+                                       personal_cargo[aux]=personal_mensaje[cont];
+                                       aux=aux+1;
+                                       }       
+                                       
+
+                                   }
+
+
+
+                                //Guardamos la variable en la estructura arr de los char
+
+                                sprintf(SQL_personal_nombre.arr,"%s", personal_nombre);
+                                SQL_personal_nombre.len=strlen(SQL_personal_nombre.arr);
+                                limpia(SQL_personal_nombre.arr);
+
+                                sprintf(SQL_personal_apellido.arr,"%s", personal_apellido);
+                                SQL_personal_apellido.len=strlen(SQL_personal_apellido.arr);
+                                limpia(SQL_personal_apellido.arr);
+
+                                sprintf(SQL_personal_rut.arr,"%s", personal_rut);
+                                SQL_personal_rut.len=strlen(SQL_personal_rut.arr);
+                                limpia(SQL_personal_rut.arr);
+                                
+                                sprintf(SQL_personal_direccion.arr,"%s", personal_direccion);
+                                SQL_personal_direccion.len=strlen(SQL_personal_direccion.arr);
+                                limpia(SQL_personal_direccion.arr);
+                                
+                                sprintf(SQL_personal_cargo.arr,"%s", personal_cargo);
+                                SQL_personal_cargo.len=strlen(SQL_personal_cargo.arr);
+                                limpia(SQL_personal_cargo.arr);
+
+
+
+                                SQL_personal_sueldo=atoi(personal_sueldo_str);
+                                SQL_personal_telefono=atoi(personal_telefono_str);
+
+
+
+                                printf("Nombre es: %s\n", SQL_personal_nombre.arr);
+                                printf("Apellido es: %s\n", SQL_personal_apellido.arr);
+                                printf("Rut es: %s\n", SQL_personal_rut.arr);
+                                printf("Direccion es: %s\n", SQL_personal_direccion.arr);
+                                printf("Cargo es: %s\n", SQL_personal_cargo.arr);
+                                printf("Sueldo es: %d\n", SQL_personal_sueldo);
+                                printf("Telefono es: %d\n", SQL_personal_telefono);
+
+                                // Verificamos si el usuario ya esta registrado
+                                
+                                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM empleado WHERE id=:SQL_personal_rut;
+
+                                if( SQL_count != 0) {
+
+                                        printf("El personal ya esta registrado\n");
+
+
+                                        memset( &respuesta, 0, sizeof respuesta);
+                                        sprintf(respuesta.texto.datos, "%s", "02");
+                                        respuesta.mtype = pid_destino;
+                                        respuesta.texto.pid = pid;
+                                        msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+
+                                } else {
+
+                                                      
+                                        
+
+                                        // Insertamos el servicio en la BdD
+                                        EXEC SQL INSERT INTO empleado (nombre,apellido,id,direccion,sueldo,telefono,cargo)
+                                                                                VALUES (:SQL_personal_nombre, :SQL_personal_apellido, :SQL_personal_rut, :SQL_personal_direccion,:SQL_personal_sueldo,:SQL_personal_telefono,:SQL_personal_cargo);
+                                        EXEC SQL COMMIT;
+
+                                        // Revisar en caso de error en la consulta
+                                        if(sqlca.sqlcode != 0) {
+
+                                                printf("\nERROR en la consulta SQL\n\n");
+
+                                                memset(&respuesta,0,sizeof respuesta);
+                                                sprintf(respuesta.texto.datos, "%s", "03");
+                                                respuesta.mtype=pid_destino;
+                                                respuesta.texto.pid=pid;
+                                                msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+
+                                        } else {
+
+                                                printf("\npersonal ingresado con exito\n\n");
+
+                                                memset(&respuesta,0,sizeof respuesta);
+                                                sprintf(respuesta.texto.datos, "%s", "01");
+                                                respuesta.mtype=pid_destino;
+                                                respuesta.texto.pid=pid;
+                                                msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+
+                                        }
+
+                                } // Fin else
+
+                        }//Fin Formulario ingper
+
 
 }
 }
