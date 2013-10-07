@@ -224,7 +224,7 @@ anio, stock, precio) VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_st
          if (strcmp(formulario, "loginn")==0){
    printf(" --------------------   \n   El proceso Es: Login\n  -------------------\n\n");
                 char rut[8];
-                char clave[8];   // cambiar claves
+                char clave[20];   // cambiar claves
             //Limpiamos los Strings
                 memset(nombre, 0 , sizeof rut);
                 memset(genero, 0 , sizeof clave);
@@ -299,21 +299,21 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
                                 printf("   --------------------   \n   El proceso Es: Ingreso de Personal\n   --------------------\n\n");
 
-                                char personal_nombre[20];
-                                char personal_apellido[20];
-                                char personal_rut[8];
-                                char personal_mail[50];
-                                char personal_clave[20];
+                                char nombre[20];
+                                char apellido[20];
+                                char rut[8];
+                                char mail[50];
+                                char clave[20];
                                 
                              
                                 //Limpiamos los Strings
 
 
-                                memset (personal_nombre, 0, sizeof personal_nombre);
-                                memset (personal_apellido, 0, sizeof personal_apellido);
-                                memset (personal_rut, 0, sizeof personal_rut);
-                                memset (personal_mail, 0, sizeof mail);
-                                memset (personal_clave, 0, sizeof clave);
+                                memset (nombre, 0, sizeof nombre);
+                                memset (apellido, 0, sizeof apellido);
+                                memset (rut, 0, sizeof rut);
+                                memset (mail, 0, sizeof mail);
+                                memset (clave, 0, sizeof clave);
                                                      
 
                                 //Recibimos los datos desde el .c
@@ -324,101 +324,76 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
 
                              //Guardamos la variable en la estructura arr de los char
+								sprintf(SQL_rut.arr,"%s", rut);
+								SQL_rut.len=strlen(SQL_rut.arr);
+								
+								sprintf(SQL_nombre_usuario.arr,"%s", nombre);
+								SQL_nombre_usuario.len=strlen(SQL_nombre_usuario.arr);
+								
+								sprintf(SQL_apellido.arr,"%s", apellido);
+								SQL_apellido.len=strlen(SQL_apellido.arr);
+								
+								sprintf(SQL_mail.arr,"%s", mail);
+								SQL_mail.len=strlen(SQL_mail.arr);
+								
+								sprintf(SQL_clave.arr,"%s", clave);
+								SQL_clave.len=strlen(SQL_clave.arr);
 
-                                sprintf(SQL_personal_nombre.arr,"%s", personal_nombre);
-                                SQL_personal_nombre.len=strlen(SQL_personal_nombre.arr);
-                                limpia(SQL_personal_nombre.arr);
+				// Verificamos si el usuario ya esta registrado
+				EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM EJEMPLO WHERE RUT=:SQL_rut;
 
-                                sprintf(SQL_personal_apellido.arr,"%s", personal_apellido);
-                                SQL_personal_apellido.len=strlen(SQL_personal_apellido.arr);
-                                limpia(SQL_personal_apellido.arr);
+				if( SQL_count != 0) {
+					
+					printf("El alumno ya fue registrado\n");
+					
+					EXEC SQL SELECT nombre INTO :SQL_nombre_usuario FROM usuario WHERE rut=:SQL_rut; // asumo bdd en minusculas
+					EXEC SQL COMMIT;
+					
+					printf("Y sus datos son: Nombre: %s , Rut: %d \n\n", SQL_nombre_usuario.arr, SQL_rut);
 
-                                sprintf(SQL_personal_rut.arr,"%s", personal_rut);
-                                SQL_personal_rut.len=strlen(SQL_personal_rut.arr);
-                                limpia(SQL_personal_rut.arr);
-                                
-                                sprintf(SQL_personal_direccion.arr,"%s", personal_direccion);
-                                SQL_personal_direccion.len=strlen(SQL_personal_direccion.arr);
-                                limpia(SQL_personal_direccion.arr);
-                                
-                                sprintf(SQL_personal_cargo.arr,"%s", personal_cargo);
-                                SQL_personal_cargo.len=strlen(SQL_personal_cargo.arr);
-                                limpia(SQL_personal_cargo.arr);
+					memset( &respuesta, 0, sizeof respuesta);
+					sprintf(respuesta.texto.datos, "%s", "01");
+					respuesta.mtype = pid_destino;
+					respuesta.texto.pid = pid;
+					msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
 
-
-
-                                SQL_personal_sueldo=atoi(personal_sueldo_str);
-                                SQL_personal_telefono=atoi(personal_telefono_str);
-
-
-
-                                printf("Nombre es: %s\n", SQL_personal_nombre.arr);
-                                printf("Apellido es: %s\n", SQL_personal_apellido.arr);
-                                printf("Rut es: %s\n", SQL_personal_rut.arr);
-                                printf("Direccion es: %s\n", SQL_personal_direccion.arr);
-                                printf("Cargo es: %s\n", SQL_personal_cargo.arr);
-                                printf("Sueldo es: %d\n", SQL_personal_sueldo);
-                                printf("Telefono es: %d\n", SQL_personal_telefono);
-
-                                // Verificamos si el usuario ya esta registrado
-                                
-                                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM empleado WHERE id=:SQL_personal_rut;
-
-                                if( SQL_count != 0) {
-
-                                        printf("El personal ya esta registrado\n");
+				} else {
 
 
-                                        memset( &respuesta, 0, sizeof respuesta);
-                                        sprintf(respuesta.texto.datos, "%s", "02");
-                                        respuesta.mtype = pid_destino;
-                                        respuesta.texto.pid = pid;
-                                        msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+					// Insertamos el alumno en la BdD
+					EXEC SQL INSERT INTO usuario (nombre,apellido,rut,clave,mail) VALUES (:SQL_nombre_usuario, :SQL_apellido, :SQL_rut, :SQL_clave, :SQL_mail);
+					EXEC SQL COMMIT;
 
-                                } else {
+					// Revisar en caso de error en la consulta
+					if(sqlca.sqlcode != 0) {
+						
+						printf("\nERROR en la consulta SQL\n\n");
 
-                                                      
-                                        
-
-                                        // Insertamos el servicio en la BdD
-                                        EXEC SQL INSERT INTO empleado (nombre,apellido,id,direccion,sueldo,telefono,cargo)
-                                                                                VALUES (:SQL_personal_nombre, :SQL_personal_apellido, :SQL_personal_rut, :SQL_personal_direccion,:SQL_personal_sueldo,:SQL_personal_telefono,:SQL_personal_cargo);
-                                        EXEC SQL COMMIT;
-
-                                        // Revisar en caso de error en la consulta
-                                        if(sqlca.sqlcode != 0) {
-
-                                                printf("\nERROR en la consulta SQL\n\n");
-
-                                                memset(&respuesta,0,sizeof respuesta);
+						memset(&respuesta,0,sizeof respuesta);
                                                 sprintf(respuesta.texto.datos, "%s", "03");
                                                 respuesta.mtype=pid_destino;
                                                 respuesta.texto.pid=pid;
                                                 msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
-                                        } else {
+					} else {			
 
-                                                printf("\npersonal ingresado con exito\n\n");
+						printf("\nAlumno ingresado con exito\n\n");	
+                            	
+						memset(&respuesta,0,sizeof respuesta);
+	                        		sprintf(respuesta.texto.datos, "%s", "01");
+       	                        		respuesta.mtype=pid_destino;
+                               	 		respuesta.texto.pid=pid;
+                                		msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
-                                                memset(&respuesta,0,sizeof respuesta);
-                                                sprintf(respuesta.texto.datos, "%s", "01");
-                                                respuesta.mtype=pid_destino;
-                                                respuesta.texto.pid=pid;
-                                                msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+					}
 
-                                        }
+				} // Fin else
 
-                                } // Fin else
-
-                        }//Fin Formulario ingper
-
+			}//Fin Formulario ingtra
 
 }
 }
-}
-}
-}
 
-
+}
 
 
