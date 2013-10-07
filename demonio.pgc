@@ -16,15 +16,26 @@ EXEC SQL BEGIN DECLARE SECTION;
    VARCHAR SQL_dbname[14];
    VARCHAR SQL_user[7];
    VARCHAR SQL_password[8];
-
+   //clientes
+   
+   VARCHAR SQL_nombre_usuario[31];
+   VARCHAR SQL_apellido[20];
+   VARCHAR SQL_mail[50];
+   
+   VARCHAR SQL_rut[8];
+   VARCHAR SQL_clave[20];   // modificar todas las contraseñas a 20.
+   
+   
+   //peliculas
    VARCHAR SQL_nombre[31];
    VARCHAR SQL_genero[20];
    VARCHAR SQL_pais[20];
    VARCHAR SQL_anio[4];
    VARCHAR SQL_stock[20];
    VARCHAR SQL_precio[5];
-   VARCHAR SQL_rut[8];
-   VARCHAR SQL_clave[8];
+   
+   
+   
    int SQL_count;
 
 EXEC SQL END DECLARE SECTION;
@@ -294,9 +305,7 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
                                 char personal_mail[50];
                                 char personal_clave[20];
                                 
-                                int cont=0;
-                                int aux=0;
-                                int val=0;
+                             
                                 //Limpiamos los Strings
 
 
@@ -311,56 +320,10 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
                                 printf("Recibi: %s\n",mensaje.texto.datos);
                                 sscanf(mensaje.texto.datos, "%6c%8c%20c%20c%50c%20c", formulario, rut, nombre, apellido, mail, clave);
-                                int conta=0;
-                                     for (conta=0;conta<=strlen(personal_mensaje)-1;conta++){
-                                          if (personal_mensaje[conta]=='#'){
-                                              personal_mensaje[conta]=' ';
-                                               }
-                                                }
-                                
-                                
-
-                                for (cont=0;cont<=strlen(personal_mensaje)-1;cont++){
-                                    if (personal_mensaje[cont]=='-'){
-                                       val=val+1;
-                                       cont=cont+1;
-                                       aux=0;
-                                       }
-                                    if (val==0){
-                                       personal_nombre[aux]=personal_mensaje[cont];
-                                       aux=aux+1;
-                                       }
-                                     if (val==1){
-                                       personal_apellido[aux]=personal_mensaje[cont];
-                                       aux=aux+1;
-                                       }   
-                                    if (val==2){
-                                       personal_rut[aux]=personal_mensaje[cont];
-                                       aux=aux+1;
-                                       }
-                                    if (val==3){
-                                       personal_direccion[aux]=personal_mensaje[cont];
-                                       aux=aux+1;
-                                       }
-                                    if (val==4){
-                                       personal_sueldo_str[aux]=personal_mensaje[cont];
-                                       aux=aux+1;
-                                       }
-                                    if (val==5){
-                                       personal_telefono_str[aux]=personal_mensaje[cont];
-                                       aux=aux+1;
-                                       }  
-                                     if (val==6){
-                                       personal_cargo[aux]=personal_mensaje[cont];
-                                       aux=aux+1;
-                                       }       
-                                       
-
-                                   }
+                             
 
 
-
-                                //Guardamos la variable en la estructura arr de los char
+                             //Guardamos la variable en la estructura arr de los char
 
                                 sprintf(SQL_personal_nombre.arr,"%s", personal_nombre);
                                 SQL_personal_nombre.len=strlen(SQL_personal_nombre.arr);
