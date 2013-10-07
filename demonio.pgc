@@ -438,34 +438,15 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 									msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
 					
 					} else {
-
-
-					// Insertamos el alumno en la BdD
-				//	EXEC SQL INSERT INTO usuario (nombre,apellido,rut,clave,mail) VALUES (:SQL_nombre_usuario, :SQL_apellido, :SQL_rut, :SQL_clave, :SQL_mail);
-				//	EXEC SQL COMMIT;
-
-					// Revisar en caso de error en la consulta
-					if(sqlca.sqlcode != 0) {
 						
-						printf("\nERROR en la consulta SQL\n\n");
+						printf("\n  no existe el rut \n\n");
 
 						memset(&respuesta,0,sizeof respuesta);
-                                                sprintf(respuesta.texto.datos, "%s", "03");
-                                                respuesta.mtype=pid_destino;
-                                                respuesta.texto.pid=pid;
-                                                msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+                        sprintf(respuesta.texto.datos, "%s", "02");
+						respuesta.mtype=pid_destino;
+                        respuesta.texto.pid=pid;
+                        msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
-					} else {			
-
-						printf("\nAlumno ingresado con exito\n\n");	
-                            	
-						memset(&respuesta,0,sizeof respuesta);
-	                        		sprintf(respuesta.texto.datos, "%s", "01");
-       	                        		respuesta.mtype=pid_destino;
-                               	 		respuesta.texto.pid=pid;
-                                		msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
-
-					}
 
 				} // Fin else
 
