@@ -293,11 +293,11 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 			
 			/*************************************************************************
                         Registrar Personas
-                         *************************************************************************/
+            *************************************************************************/
 
                         if (strcmp(formulario, "regist")==0){
 
-                                printf("   --------------------   \n   El proceso Es: Ingreso de Personal\n   --------------------\n\n");
+                                printf("   --------------------   \n   Registrar personas.\n   --------------------\n\n");
 
                                 char nombre[20];
                                 char apellido[20];
@@ -390,6 +390,86 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 				} // Fin else
 
 			}//Fin Formulario regist
+			
+			/*************************************************************************
+				Eliminar Personas 
+			*************************************************************************/
+
+                        if (strcmp(formulario, "eliusu")==0){
+
+                                printf("   --------------------   \n   Eliminemos gente! \n   --------------------\n\n");
+
+                                char rut[8];
+                             
+                                //Limpiamos los Strings
+
+                                memset (rut, 0, sizeof rut);
+                                
+                                //Recibimos los datos desde el .c
+
+                                printf("Recibi: %s\n",mensaje.texto.datos);
+                                sscanf(mensaje.texto.datos, "%6c%8c", formulario, rut);
+                             
+                             //Guardamos la variable en la estructura arr de los char
+								
+								sprintf(SQL_rut.arr,"%s", rut);
+								SQL_rut.len=strlen(SQL_rut.arr);
+								
+								printf("El Rut de la Persona es: %s\n", SQL_rut.arr);
+								
+				// Verificamos si el rut existe.
+				
+								EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario WHERE id=:SQL_rut;
+				
+                                if( SQL_count != 0) {
+                                    //Obtenemos datos del cliente a eliminar y limpiamos
+                                        
+								//Eliminamos el cliente de la BdD
+                                        EXEC SQL DELETE FROM usuario
+                                        WHERE id = :SQL_rut;
+                                        EXEC SQL COMMIT;
+										
+									
+									
+									memset( &respuesta, 0, sizeof respuesta);
+									sprintf(respuesta.texto.datos, "%s", "01");
+									respuesta.mtype = pid_destino;
+									respuesta.texto.pid = pid;
+									msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+					
+					} else {
+
+
+					// Insertamos el alumno en la BdD
+				//	EXEC SQL INSERT INTO usuario (nombre,apellido,rut,clave,mail) VALUES (:SQL_nombre_usuario, :SQL_apellido, :SQL_rut, :SQL_clave, :SQL_mail);
+				//	EXEC SQL COMMIT;
+
+					// Revisar en caso de error en la consulta
+					if(sqlca.sqlcode != 0) {
+						
+						printf("\nERROR en la consulta SQL\n\n");
+
+						memset(&respuesta,0,sizeof respuesta);
+                                                sprintf(respuesta.texto.datos, "%s", "03");
+                                                respuesta.mtype=pid_destino;
+                                                respuesta.texto.pid=pid;
+                                                msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+
+					} else {			
+
+						printf("\nAlumno ingresado con exito\n\n");	
+                            	
+						memset(&respuesta,0,sizeof respuesta);
+	                        		sprintf(respuesta.texto.datos, "%s", "01");
+       	                        		respuesta.mtype=pid_destino;
+                               	 		respuesta.texto.pid=pid;
+                                		msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+
+					}
+
+				} // Fin else
+
+			}//Fin Formulario eliusu
 
 }
 }
