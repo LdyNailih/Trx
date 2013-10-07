@@ -16,7 +16,7 @@ cf  07  05  07 Clave:
 ce  07  24  10 13 AN 0
 
 cf  08  05  19 Codigo Pelicula:
-ce  08  24  10 42 AN 0
+ce  08  24  10 42 AN 0 
 
 cf  11  05  07 Precio:
 ce  11  23  05 71  AN 0
@@ -25,7 +25,7 @@ cm  02  05  21 0
 
 tm 01 12 No hay stock
 tm 02 21 No coinside el codigo
-tm 03 15 Compra exitosa
+tm 03 15 Compra exitosa 
 tm 04 15 Faltan datos
 tm 05 19 No existe pelicula
 

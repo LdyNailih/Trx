@@ -1,0 +1,214 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+
+// Incluye el mecanismo de manejo de errores de SQL
+EXEC SQL INCLUDE sqlca;
+
+// Declaracion de variables a usar en SQL
+EXEC SQL BEGIN DECLARE SECTION;
+
+   VARCHAR SQL_dbname[14];
+   VARCHAR SQL_user[7];
+   VARCHAR SQL_password[8];
+
+   VARCHAR SQL_nombre[31];
+   VARCHAR SQL_genero[20];
+   VARCHAR SQL_pais[20];
+   VARCHAR SQL_anio[4];
+   VARCHAR SQL_stock[20];
+   VARCHAR SQL_precio[5];
+   VARCHAR SQL_rut[8];
+   int SQL_count;
+
+EXEC SQL END DECLARE SECTION;
+
+
+// Metodo para conectarse a la BdD
+int SQLConectar() {
+
+    strcpy(SQL_dbname.arr, "transaccionales");
+    SQL_dbname.len = strlen(SQL_dbname.arr);
+    strcpy(SQL_user.arr, "17957434");
+    SQL_user.len = strlen(SQL_user.arr);
+    strcpy(SQL_password.arr, "dalarcon");
+    SQL_password.len = strlen(SQL_password.arr);
+
+    EXEC SQL CONNECT TO :SQL_dbname USER :SQL_user IDENTIFIED BY 
+    :SQL_password;
+
+    if(sqlca.sqlcode != 0) {
+            printf("Error en la conexion con la base de datos\n\n");
+            return(0);
+    } else {
+            printf("Conexion con base de datos realizada\n\n");
+            return(1);
+    }
+}
+// Fin SQLConectar()
+
+
+int main() {
+
+    printf("\n\n ++++++++++   Demonio en ejecucion   ++++++++++\n\n\n");
+    printf("Conexion BdD:\n");
+
+    SQLConectar();
+
+    // Se definen variables y estructuras necesarias para la comunicacion 
+    // entre el demonio y los .c
+
+    int qid, pid , len;
+
+    struct msgbuf
+    {
+        long mtype;
+        struct
+        {
+            int pid;
+            char datos[2000];
+        } texto;
+    } mensaje, respuesta;
+
+    qid = msgget (5942016, IPC_CREAT|0666);
+    pid = getpid ();
+
+    while(1){
+
+        //limpiamos la estructura de mensaje
+        memset(&mensaje, 0, sizeof mensaje);
+
+        //Limpiamos la estructura de respuesta
+        memset (&respuesta, 0, sizeof respuesta);
+
+        if((len = msgrcv (qid, &mensaje, 2500, 1, 0)) > 0) {
+
+            memset (&respuesta, 0, sizeof respuesta);
+            printf("Recibido: (%ld) <%d/%s>\n\n", mensaje.mtype, 
+            mensaje.texto.pid, mensaje.texto.datos);
+            int pid_destino = mensaje.texto.pid;
+        
+
+     // Fomulario del que viene
+
+            char formulario[7];
+            memset (formulario, 0, sizeof formulario);
+            sscanf(mensaje.texto.datos, "%6c", formulario);
+            printf("El formulario es: [%s]\n\n", formulario);
+
+
+        
+/*************************************************************************
+                                Formularios
+*************************************************************************/
+
+    //FORMULARIO INGRESAR PELICULA
+            if (strcmp(formulario, "ingpel")==0){
+
+                printf("   --------------------   \n   El proceso Es: Ingresar Pelicula \n   --------------------\n\n");
+                char nombre[20];
+                char genero[20];
+                char pais[20];
+                char anio[4];
+                char stock[20];
+                char precio[5];
+                
+            //Limpiamos los Strings
+                memset(nombre, 0 , sizeof nombre);
+                memset(genero, 0 , sizeof genero);
+                memset(pais, 0, sizeof pais);
+                memset(anio, 0 , sizeof anio);
+                memset(stock, 0, sizeof stock);
+                memset(precio, 0, sizeof precio);
+
+            //Recibimos los datos desde el .c
+                sscanf(mensaje.texto.datos, "%20c%20c%20c%4c%20c%5c", nombre,
+                genero, pais, anio, stock, precio);
+
+            //Guardamos la variable en la estructura 
+                sprintf(SQL_nombre.arr,"%s", nombre);
+                SQL_nombre.len=strlen(SQL_nombre.arr);
+                sprintf(SQL_genero.arr,"%s", genero);
+                SQL_genero.len=strlen(SQL_genero.arr);
+                sprintf(SQL_pais.arr,"%s", pais);
+                SQL_pais.len=strlen(SQL_pais.arr);
+                sprintf(SQL_anio.arr,"%s", anio);
+                SQL_anio.len=strlen(SQL_anio.arr);
+                sprintf(SQL_stock.arr,"%s", stock);
+                SQL_stock.len=strlen(SQL_stock.arr);
+                sprintf(SQL_precio.arr,"%s", precio);
+                SQL_precio.len=strlen(SQL_precio.arr);
+                
+                printf("La pelicula es: %s\n", SQL_nombre.arr);
+                printf("Genero: %s\n", SQL_genero.arr);
+                printf("Pais: %s\n", SQL_pais.arr);
+                printf("Anio: %s\n", SQL_anio.arr);
+                printf("Stock: %s\n", SQL_stock.arr);
+                printf("Precio: %s\n", SQL_precio.arr);
+         
+             //Verificamos si la  pelicula ya existe
+                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM PELICULA WHERE 
+                NOMBRE=:SQL_nombre;
+
+                if( SQL_count != 0)
+                {
+                    printf("La pelicula ya existe\n");
+                    EXEC SQL SELECT nombre INTO :SQL_nombre FROM pelicula WHERE                     genero=:SQL_genero;
+                    EXEC SQL SELECT nombre INTO :SQL_nombre FROM pelicula WHERE
+                    pais=:SQL_pais;
+                    EXEC SQL SELECT nombre INTO :SQL_nombre FROM pelicula WHERE
+                    anio=:SQL_anio;
+                    EXEC SQL SELECT nombre INTO :SQL_nombre FROM pelicula WHERE
+                    stock=:SQL_stock;
+                    EXEC SQL SELECT nombre INTO :SQL_nombre FROM pelicula WHERE
+                    precio=:SQL_precio;
+                    EXEC SQL COMMIT;
+
+                    printf("Y sus datos son: Nombre Pelicula:%s,Genero:%s,Pais:%s,Anio:%s,Stock:%s,Precio:%s\n\n",SQL_nombre.arr,SQL_genero.arr,SQL_pais.arr,SQL_anio.arr,SQL_stock.arr,SQL_precio.arr);
+
+                    memset( &respuesta, 0, sizeof respuesta);
+                    sprintf(respuesta.texto.datos, "%s", "02");
+                    respuesta.mtype = pid_destino;
+                    respuesta.texto.pid = pid;
+                    msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+                }
+                else{
+
+
+               // Insertamos la película en la base de datos
+                    EXEC SQL INSERT INTO pelicula (nombre, genero, pais, 
+anio, stock, precio) VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
+                    EXEC SQL COMMIT;
+
+                // Revisar en caso de error en la consulta
+                    if(sqlca.sqlcode != 0) {
+                     printf("\nERROR en la consulta SQL\n\n");
+                     memset(&respuesta,0,sizeof respuesta);
+                        sprintf(respuesta.texto.datos,"%s", "03");
+                        respuesta.mtype=pid_destino;
+                        respuesta.texto.pid=pid;
+                    msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+
+                    } else {
+
+                   printf("\nPelicula ingresada con exito\n\n");
+                   memset(&respuesta,0,sizeof respuesta);
+                    sprintf(respuesta.texto.datos, "%s","01");
+                    respuesta.mtype=pid_destino;
+                    respuesta.texto.pid=pid;
+        msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+
+                } // Fin else
+
+            } //Fin Formulario
+
+}
+}
+}
+}
+

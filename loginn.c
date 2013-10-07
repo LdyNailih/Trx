@@ -14,25 +14,15 @@ struct trans
 void proceso (char *aci, struct trans *tx_in, struct trans *tx_out,
 struct trans *tx_sa)
 {
-    char nombre[20];
-    char genero[20];
-    char pais[20];
-    char anio[4];
-    char stock[20];
-    char precio[5];
+    char rut[8];
+    char clave[8];
 
-    memset(nombre, 0 , sizeof nombre);
-    memset(genero, 0 , sizeof genero);
-    memset(pais, 0, sizeof pais);
-    memset(anio, 0 , sizeof anio);
-    memset(stock, 0, sizeof stock);
-    memset(precio, 0, sizeof precio);
+    memset(rut, 0 , sizeof rut);
+    memset(clave, 0 , sizeof clave);
 
-    sscanf(tx_in->datos,"%20c%20c%20c%4c%20c%5c", nombre, genero, 
-    pais, anio, stock, precio);
+    sscanf(tx_in->datos,"%8c%8c", rut, clave);
 
-    tx_out->len = sprintf(tx_out->datos,"%s%s%s%s%s%s", nombre, genero,
-    pais, anio, stock, precio);
+    tx_out->len = sprintf(tx_out->datos,"%s%s", rut, clave);
 
 
 // Comunicacion con el Demonio 
@@ -55,8 +45,7 @@ struct trans *tx_sa)
 
   // guardamos en la estructura mensaje lo que se quiere enviar 
         //al demonio
-        sprintf(mensaje.texto.dat, "%s%s%s%s%s%s", "ingpel" , nombre,
-        genero, pais, anio, stock, precio);
+        sprintf(mensaje.texto.dat, "%s%s", "loginn" , rut, clave);
 
         mensaje.mtype = 1;
         mensaje.texto.pid = pid;
