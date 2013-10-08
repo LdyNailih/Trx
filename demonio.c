@@ -118,10 +118,10 @@ struct sqlca_t *ECPGget_sqlca(void);
 
 
 #line 16 "demonio.pgc"
-  struct varchar_1  { int len; char arr[ 14 ]; }  SQL_dbname ;
+  struct varchar_1  { int len; char arr[ 15 ]; }  SQL_dbname ;
  
 #line 17 "demonio.pgc"
-  struct varchar_2  { int len; char arr[ 7 ]; }  SQL_user ;
+  struct varchar_2  { int len; char arr[ 8 ]; }  SQL_user ;
  
 #line 18 "demonio.pgc"
   struct varchar_3  { int len; char arr[ 8 ]; }  SQL_password ;
@@ -588,17 +588,18 @@ printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut
 						printf("\nERROR en la consulta SQL\n\n");
 
 						memset(&respuesta,0,sizeof respuesta);
-                                                sprintf(respuesta.texto.datos, "%s", "03");
+                                                
+sprintf(respuesta.texto.datos, "%s", "02");
                                                 respuesta.mtype=pid_destino;
                                                 respuesta.texto.pid=pid;
                                                 msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
 					} else {			
 
-						printf("\nAlumno ingresado con exito\n\n");	
+						printf("\nIngresado con exito\n\n");	
                             	
 						memset(&respuesta,0,sizeof respuesta);
-	                        		sprintf(respuesta.texto.datos, "%s", "01");
+	                        		sprintf(respuesta.texto.datos, "%s", "03");
        	                        		respuesta.mtype=pid_destino;
                                	 		respuesta.texto.pid=pid;
                                 		msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
@@ -642,7 +643,7 @@ printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 422 "demonio.pgc"
+#line 423 "demonio.pgc"
 
 				
                                 if( SQL_count != 0) {
@@ -652,10 +653,10 @@ printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut
                                         { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "delete from usuario where id = $1 ", 
 	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 429 "demonio.pgc"
+#line 430 "demonio.pgc"
 
                                         { ECPGtrans(__LINE__, NULL, "commit");}
-#line 430 "demonio.pgc"
+#line 431 "demonio.pgc"
 
 										
 									

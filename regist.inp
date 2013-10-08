@@ -21,8 +21,8 @@ ce 09 20 20 028 AN 0
 cf 10 05 06 Mail:
 ce 10 20 50 048 AN 0
 
-cf 10 05 07 Clave:
-ce 10 20 20 098 AN 0
+cf 11 05 07 Clave:
+ce 11 20 20 098 AN 0
 
 cm 15 10 02 00
 
