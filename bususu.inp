@@ -1,4 +1,4 @@
-ID bususu 900104 8 108
+ID bususu 900104 8 92
 fs 22 70
 #ocp debug
 #ct inv
@@ -14,15 +14,15 @@ cf 07 30 35 Ex: 17083021 (sin puntos ni guion)
 
 
 cf 08 05 08 Nombre:
-cs 08 20 20 000 AN 0
+cs 08 20 20 002 AN 0
   
 cf 09 05 10 Apellido: 
-cs 09 20 20 020 AN 0
+cs 09 20 20 022 AN 0
 
 cf 10 05 06 Mail:
-cs 10 20 50 040 AN 0
+cs 10 20 50 042 AN 0
 
-cm 02 05 18 090
+cm 15 10 02 000
 tm 01 18 Usuario no Existe!
 
 ff

@@ -630,7 +630,7 @@ sprintf(respuesta.texto.datos, "%s", "02");
 
                                 printf("   --------------------   \n   Eliminemos gente! \n   --------------------\n\n");
 
-                                char rut[8];
+                                char rut[9];
                              
                                 //Limpiamos los Strings
 
@@ -650,7 +650,7 @@ sprintf(respuesta.texto.datos, "%s", "02");
 								
 				// Verificamos si el rut existe.
 				
-								{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from usuario where id = $1 ", 
+								{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from USUARIO where rut = $1 ", 
 	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
@@ -662,13 +662,13 @@ sprintf(respuesta.texto.datos, "%s", "02");
                                     //Obtenemos datos del cliente a eliminar y limpiamos
                                         
 								//Eliminamos el cliente de la BdD
-                                        { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "delete from usuario where id = $1 ", 
+                                        { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "delete from USUARIO where rut = $1 ", 
 	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 443 "demonio.pgc"
+#line 442 "demonio.pgc"
 
                                         { ECPGtrans(__LINE__, NULL, "commit");}
-#line 444 "demonio.pgc"
+#line 443 "demonio.pgc"
 
 										
 									

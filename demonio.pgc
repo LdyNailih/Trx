@@ -413,7 +413,7 @@ sprintf(respuesta.texto.datos, "%s", "02");
 
                                 printf("   --------------------   \n   Eliminemos gente! \n   --------------------\n\n");
 
-                                char rut[8];
+                                char rut[9];
                              
                                 //Limpiamos los Strings
 
@@ -433,14 +433,13 @@ sprintf(respuesta.texto.datos, "%s", "02");
 								
 				// Verificamos si el rut existe.
 				
-								EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario WHERE id=:SQL_rut;
+								EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM USUARIO WHERE rut=:SQL_rut;
 				
                                 if( SQL_count != 0) {
                                     //Obtenemos datos del cliente a eliminar y limpiamos
                                         
 								//Eliminamos el cliente de la BdD
-                                        EXEC SQL DELETE FROM usuario
-                                        WHERE id = :SQL_rut;
+                                        EXEC SQL DELETE FROM USUARIO WHERE rut=:SQL_rut;
                                         EXEC SQL COMMIT;
 										
 									
