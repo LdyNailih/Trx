@@ -13,7 +13,7 @@ struct trans
 
 void proceso (char *aci, struct trans *tx_in, struct trans *tx_out, struct trans *tx_sa)
 {
-	char rut[8];
+	char rut[9];
 	memset(rut, 0 , sizeof rut);
 	
 	sscanf(tx_in->datos,"%8c", rut);
@@ -33,14 +33,14 @@ int qid,pid;
 		} texto;
 	} mensaje, respuesta;
 
-	qid = msgget(5942016, 0666);
+	qid = msgget(666666, 0666);
 	pid = getpid();
 
 	// Limpiamos la estructura del mensaje
 	memset(&mensaje, 0, sizeof mensaje);
 
 	// guardamos en la estructura mensaje lo que se quiere enviar al demonio
-	sprintf(mensaje.texto.dat, "%s", "eliusu", rut);
+	sprintf(mensaje.texto.dat, "%6s%s", "eliusu", rut);
 
 	mensaje.mtype = 1;
 	mensaje.texto.pid = pid;

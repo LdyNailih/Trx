@@ -101,7 +101,7 @@ struct sqlca_t *ECPGget_sqlca(void);
     
    
     
-       // modificar todas las contraseñas a 20.
+     
    
    
    //peliculas
@@ -113,71 +113,70 @@ struct sqlca_t *ECPGget_sqlca(void);
     
    
    
-   
-    
+       
 
 
 #line 16 "demonio.pgc"
-  struct varchar_1  { int len; char arr[ 15 ]; }  SQL_dbname ;
+  struct varchar_1  { int len; char arr[ 16 ]; }  SQL_dbname ;
  
 #line 17 "demonio.pgc"
-  struct varchar_2  { int len; char arr[ 8 ]; }  SQL_user ;
+  struct varchar_2  { int len; char arr[ 16 ]; }  SQL_user ;
  
 #line 18 "demonio.pgc"
-  struct varchar_3  { int len; char arr[ 8 ]; }  SQL_password ;
+  struct varchar_3  { int len; char arr[ 9 ]; }  SQL_password ;
  
 #line 21 "demonio.pgc"
-  struct varchar_4  { int len; char arr[ 31 ]; }  SQL_nombre_usuario ;
+  struct varchar_4  { int len; char arr[ 21 ]; }  SQL_nombre_usuario ;
  
 #line 22 "demonio.pgc"
-  struct varchar_5  { int len; char arr[ 20 ]; }  SQL_apellido ;
+  struct varchar_5  { int len; char arr[ 21 ]; }  SQL_apellido ;
  
 #line 23 "demonio.pgc"
-  struct varchar_6  { int len; char arr[ 50 ]; }  SQL_mail ;
+  struct varchar_6  { int len; char arr[ 51 ]; }  SQL_mail ;
  
 #line 25 "demonio.pgc"
-  struct varchar_7  { int len; char arr[ 8 ]; }  SQL_rut ;
+  struct varchar_7  { int len; char arr[ 9 ]; }  SQL_rut ;
  
 #line 26 "demonio.pgc"
-  struct varchar_8  { int len; char arr[ 20 ]; }  SQL_clave ;
+  struct varchar_8  { int len; char arr[ 21 ]; }  SQL_clave ;
  
 #line 30 "demonio.pgc"
-  struct varchar_9  { int len; char arr[ 31 ]; }  SQL_nombre ;
+  struct varchar_9  { int len; char arr[ 21 ]; }  SQL_nombre ;
  
 #line 31 "demonio.pgc"
-  struct varchar_10  { int len; char arr[ 20 ]; }  SQL_genero ;
+  struct varchar_10  { int len; char arr[ 21 ]; }  SQL_genero ;
  
 #line 32 "demonio.pgc"
-  struct varchar_11  { int len; char arr[ 20 ]; }  SQL_pais ;
+  struct varchar_11  { int len; char arr[ 21 ]; }  SQL_pais ;
  
 #line 33 "demonio.pgc"
-  struct varchar_12  { int len; char arr[ 4 ]; }  SQL_anio ;
+  struct varchar_12  { int len; char arr[ 5 ]; }  SQL_anio ;
  
 #line 34 "demonio.pgc"
-  struct varchar_13  { int len; char arr[ 20 ]; }  SQL_stock ;
+  struct varchar_13  { int len; char arr[ 21 ]; }  SQL_stock ;
  
 #line 35 "demonio.pgc"
-  struct varchar_14  { int len; char arr[ 5 ]; }  SQL_precio ;
+  struct varchar_14  { int len; char arr[ 6 ]; }  SQL_precio ;
  
-#line 39 "demonio.pgc"
+#line 38 "demonio.pgc"
  int SQL_count ;
 /* exec sql end declare section */
-#line 41 "demonio.pgc"
+#line 40 "demonio.pgc"
 
 
 
 // Metodo para conectarse a la BdD
 int SQLConectar() {
 
-    strcpy(SQL_dbname.arr, "transaccionales");
+    strcpy(SQL_dbname.arr, "b17957434_trans");
     SQL_dbname.len = strlen(SQL_dbname.arr);
-    strcpy(SQL_user.arr, "17957434");
+    strcpy(SQL_user.arr, "b17957434_trans");
     SQL_user.len = strlen(SQL_user.arr);
     strcpy(SQL_password.arr, "dalarcon");
     SQL_password.len = strlen(SQL_password.arr);
 
     { ECPGconnect(__LINE__, 0, SQL_dbname.arr , SQL_user.arr , SQL_password.arr , NULL, 0); }
-#line 55 "demonio.pgc"
+#line 54 "demonio.pgc"
 
 
     if(sqlca.sqlcode != 0) {
@@ -213,7 +212,7 @@ int main() {
         } texto;
     } mensaje, respuesta;
 
-    qid = msgget (5942016, IPC_CREAT|0666);
+    qid = msgget (666666, IPC_CREAT|0666);
     pid = getpid ();
 
     while(1){
@@ -249,12 +248,12 @@ int main() {
             if (strcmp(formulario, "ingpel")==0){
 
                 printf("   --------------------   \n   El proceso Es: Ingresar Pelicula \n   --------------------\n\n");
-                char nombre[20];
-                char genero[20];
-                char pais[20];
-                char anio[4];
-                char stock[20];
-                char precio[5];
+                char nombre[21];
+                char genero[21];
+                char pais[21];
+                char anio[5];
+                char stock[21];
+                char precio[6];
                 
             //Limpiamos los Strings
                 memset(nombre, 0 , sizeof nombre);
@@ -271,14 +270,19 @@ int main() {
             //Guardamos la variable en la estructura 
                 sprintf(SQL_nombre.arr,"%s", nombre);
                 SQL_nombre.len=strlen(SQL_nombre.arr);
+
                 sprintf(SQL_genero.arr,"%s", genero);
                 SQL_genero.len=strlen(SQL_genero.arr);
+
                 sprintf(SQL_pais.arr,"%s", pais);
                 SQL_pais.len=strlen(SQL_pais.arr);
+
                 sprintf(SQL_anio.arr,"%s", anio);
                 SQL_anio.len=strlen(SQL_anio.arr);
+
                 sprintf(SQL_stock.arr,"%s", stock);
                 SQL_stock.len=strlen(SQL_stock.arr);
+
                 sprintf(SQL_precio.arr,"%s", precio);
                 SQL_precio.len=strlen(SQL_precio.arr);
                 
@@ -291,53 +295,53 @@ int main() {
          
              //Verificamos si la  pelicula ya existe
                 { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from PELICULA where NOMBRE = $1 ", 
-	ECPGt_varchar,&(SQL_nombre),(long)31,(long)1,sizeof(struct varchar_9), 
+	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 168 "demonio.pgc"
+#line 172 "demonio.pgc"
 
 
                 if( SQL_count != 0)
                 {
                     printf("La pelicula ya existe\n");
                     { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where genero = $1 ", 
-	ECPGt_varchar,&(SQL_genero),(long)20,(long)1,sizeof(struct varchar_10), 
+	ECPGt_varchar,&(SQL_genero),(long)21,(long)1,sizeof(struct varchar_10), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
-	ECPGt_varchar,&(SQL_nombre),(long)31,(long)1,sizeof(struct varchar_9), 
-	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 173 "demonio.pgc"
-
-                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where pais = $1 ", 
-	ECPGt_varchar,&(SQL_pais),(long)20,(long)1,sizeof(struct varchar_11), 
-	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
-	ECPGt_varchar,&(SQL_nombre),(long)31,(long)1,sizeof(struct varchar_9), 
-	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 175 "demonio.pgc"
-
-                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where anio = $1 ", 
-	ECPGt_varchar,&(SQL_anio),(long)4,(long)1,sizeof(struct varchar_12), 
-	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
-	ECPGt_varchar,&(SQL_nombre),(long)31,(long)1,sizeof(struct varchar_9), 
+	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
 #line 177 "demonio.pgc"
 
-                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where stock = $1 ", 
-	ECPGt_varchar,&(SQL_stock),(long)20,(long)1,sizeof(struct varchar_13), 
+                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where pais = $1 ", 
+	ECPGt_varchar,&(SQL_pais),(long)21,(long)1,sizeof(struct varchar_11), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
-	ECPGt_varchar,&(SQL_nombre),(long)31,(long)1,sizeof(struct varchar_9), 
+	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
 #line 179 "demonio.pgc"
 
-                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where precio = $1 ", 
-	ECPGt_varchar,&(SQL_precio),(long)5,(long)1,sizeof(struct varchar_14), 
+                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where anio = $1 ", 
+	ECPGt_varchar,&(SQL_anio),(long)5,(long)1,sizeof(struct varchar_12), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
-	ECPGt_varchar,&(SQL_nombre),(long)31,(long)1,sizeof(struct varchar_9), 
+	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
 #line 181 "demonio.pgc"
 
+                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where stock = $1 ", 
+	ECPGt_varchar,&(SQL_stock),(long)21,(long)1,sizeof(struct varchar_13), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
+	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
+#line 183 "demonio.pgc"
+
+                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from pelicula where precio = $1 ", 
+	ECPGt_varchar,&(SQL_precio),(long)6,(long)1,sizeof(struct varchar_14), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
+	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
+#line 185 "demonio.pgc"
+
                     { ECPGtrans(__LINE__, NULL, "commit");}
-#line 182 "demonio.pgc"
+#line 186 "demonio.pgc"
 
 
                     printf("Y sus datos son: Nombre Pelicula:%s,Genero:%s,Pais:%s,Anio:%s,Stock:%s,Precio:%s\n\n",SQL_nombre.arr,SQL_genero.arr,SQL_pais.arr,SQL_anio.arr,SQL_stock.arr,SQL_precio.arr);
@@ -352,23 +356,23 @@ int main() {
 
 
                // Insertamos la película en la base de datos
-                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "insert into pelicula ( nombre , genero , pais , anio , stock , precio ) values ( $1  , $2  , $3  , $4  , $5  , $6  )", 
-	ECPGt_varchar,&(SQL_nombre),(long)31,(long)1,sizeof(struct varchar_9), 
+                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "insert into PELICULA ( nombre , genero , pais , anio , stock , precio ) values ( $1  , $2  , $3  , $4  , $5  , $6  )", 
+	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_genero),(long)20,(long)1,sizeof(struct varchar_10), 
+	ECPGt_varchar,&(SQL_genero),(long)21,(long)1,sizeof(struct varchar_10), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_pais),(long)20,(long)1,sizeof(struct varchar_11), 
+	ECPGt_varchar,&(SQL_pais),(long)21,(long)1,sizeof(struct varchar_11), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_anio),(long)4,(long)1,sizeof(struct varchar_12), 
+	ECPGt_varchar,&(SQL_anio),(long)5,(long)1,sizeof(struct varchar_12), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_stock),(long)20,(long)1,sizeof(struct varchar_13), 
+	ECPGt_varchar,&(SQL_stock),(long)21,(long)1,sizeof(struct varchar_13), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_precio),(long)5,(long)1,sizeof(struct varchar_14), 
+	ECPGt_varchar,&(SQL_precio),(long)6,(long)1,sizeof(struct varchar_14), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 197 "demonio.pgc"
+#line 201 "demonio.pgc"
 
                     { ECPGtrans(__LINE__, NULL, "commit");}
-#line 198 "demonio.pgc"
+#line 202 "demonio.pgc"
 
 
                 // Revisar en caso de error en la consulta
@@ -415,22 +419,22 @@ int main() {
 
              //Verificamos si el usuario ya existe
                 { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from usuario where rut = $1 ", 
-	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 245 "demonio.pgc"
+#line 249 "demonio.pgc"
 
 
                 if( SQL_count != 0)
                 {
                     printf("Rut ya existente\n");
                     { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from usuario where rut = $1 ", 
-	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
-	ECPGt_varchar,&(SQL_nombre),(long)31,(long)1,sizeof(struct varchar_9), 
+	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 252 "demonio.pgc"
+#line 256 "demonio.pgc"
 
 
                     printf("Datos: Rut:%s",SQL_rut.arr);
@@ -446,15 +450,15 @@ int main() {
 
 
                // Insertamos el rut en la base de datos
-                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "insert into login ( rut , clave ) values ( $1  , $2  )", 
-	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
+                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "insert into usuario ( rut , clave ) values ( $1  , $2  )", 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_clave),(long)20,(long)1,sizeof(struct varchar_8), 
+	ECPGt_varchar,&(SQL_clave),(long)21,(long)1,sizeof(struct varchar_8), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 267 "demonio.pgc"
+#line 271 "demonio.pgc"
 
                     { ECPGtrans(__LINE__, NULL, "commit");}
-#line 268 "demonio.pgc"
+#line 272 "demonio.pgc"
 
 
                 // Revisar en caso de error en la consulta
@@ -489,11 +493,11 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
                                 printf("   --------------------   \n   Registrar personas.\n   --------------------\n\n");
 
-                                char nombre[20];
-                                char apellido[20];
-                                char rut[8];
-                                char mail[50];
-                                char clave[20];
+                                char nombre[21];
+                                char apellido[21];
+                                char rut[9];
+                                char mail[51];
+                                char clave[21];
                                 
                              
                                 //Limpiamos los Strings
@@ -530,30 +534,30 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 								SQL_clave.len=strlen(SQL_clave.arr);
 
 				// Verificamos si el usuario ya esta registrado
-				{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from EJEMPLO where RUT = $1 ", 
-	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
+				{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from USUARIO where RUT = $1 ", 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 343 "demonio.pgc"
+#line 347 "demonio.pgc"
 
 
 				if( SQL_count != 0) {
 					
 					printf("El alumno ya fue registrado\n");
 					
-					{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from usuario where rut = $1 ", 
-	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
+					{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from USUARIO where rut = $1 ", 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
-	ECPGt_varchar,&(SQL_nombre_usuario),(long)31,(long)1,sizeof(struct varchar_4), 
+	ECPGt_varchar,&(SQL_nombre_usuario),(long)21,(long)1,sizeof(struct varchar_4), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 349 "demonio.pgc"
+#line 353 "demonio.pgc"
  
 					{ ECPGtrans(__LINE__, NULL, "commit");}
-#line 350 "demonio.pgc"
+#line 354 "demonio.pgc"
 
 					
-printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut.arr);
+  printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut.arr);
 
 					memset( &respuesta, 0, sizeof respuesta);
 					sprintf(respuesta.texto.datos, "%s", "01");
@@ -565,21 +569,29 @@ printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut
 
 
 					// Insertamos el alumno en la BdD
-					{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "insert into usuario ( nombre , apellido , rut , clave , mail ) values ( $1  , $2  , $3  , $4  , $5  )", 
-	ECPGt_varchar,&(SQL_nombre_usuario),(long)31,(long)1,sizeof(struct varchar_4), 
+                       
+                      // printf("Nombre :s\n",SQL_nombre_usuario.arr);
+                       // printf("Apellido : s\n",SQL_apellido.arr);
+                       // printf("Rut : s\n", SQL_rut.arr);
+                       // printf("Mail :s\n",SQL_mail.arr);
+                       // printf("Clave : s\n",SQL_clave.arr);
+
+
+					{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "insert into USUARIO ( rut , nombre , apellido , mail , clave ) values ( $1  , $2  , $3  , $4  , $5  )", 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_apellido),(long)20,(long)1,sizeof(struct varchar_5), 
+	ECPGt_varchar,&(SQL_nombre_usuario),(long)21,(long)1,sizeof(struct varchar_4), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
+	ECPGt_varchar,&(SQL_apellido),(long)21,(long)1,sizeof(struct varchar_5), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_clave),(long)20,(long)1,sizeof(struct varchar_8), 
+	ECPGt_varchar,&(SQL_mail),(long)51,(long)1,sizeof(struct varchar_6), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_mail),(long)50,(long)1,sizeof(struct varchar_6), 
+	ECPGt_varchar,&(SQL_clave),(long)21,(long)1,sizeof(struct varchar_8), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 364 "demonio.pgc"
+#line 377 "demonio.pgc"
 
 					{ ECPGtrans(__LINE__, NULL, "commit");}
-#line 365 "demonio.pgc"
+#line 378 "demonio.pgc"
 
 
 					// Revisar en caso de error en la consulta
@@ -639,11 +651,11 @@ sprintf(respuesta.texto.datos, "%s", "02");
 				// Verificamos si el rut existe.
 				
 								{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from usuario where id = $1 ", 
-	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 423 "demonio.pgc"
+#line 436 "demonio.pgc"
 
 				
                                 if( SQL_count != 0) {
@@ -651,12 +663,12 @@ sprintf(respuesta.texto.datos, "%s", "02");
                                         
 								//Eliminamos el cliente de la BdD
                                         { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "delete from usuario where id = $1 ", 
-	ECPGt_varchar,&(SQL_rut),(long)8,(long)1,sizeof(struct varchar_7), 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 430 "demonio.pgc"
+#line 443 "demonio.pgc"
 
                                         { ECPGtrans(__LINE__, NULL, "commit");}
-#line 431 "demonio.pgc"
+#line 444 "demonio.pgc"
 
 										
 									

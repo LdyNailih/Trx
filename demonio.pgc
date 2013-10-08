@@ -13,30 +13,29 @@ EXEC SQL INCLUDE sqlca;
 // Declaracion de variables a usar en SQL
 EXEC SQL BEGIN DECLARE SECTION;
 
-   VARCHAR SQL_dbname[15];
-   VARCHAR SQL_user[8];
-   VARCHAR SQL_password[8];
+   VARCHAR SQL_dbname[16];
+   VARCHAR SQL_user[16];
+   VARCHAR SQL_password[9];
    //clientes
    
-   VARCHAR SQL_nombre_usuario[31];
-   VARCHAR SQL_apellido[20];
-   VARCHAR SQL_mail[50];
+   VARCHAR SQL_nombre_usuario[21];
+   VARCHAR SQL_apellido[21];
+   VARCHAR SQL_mail[51];
    
-   VARCHAR SQL_rut[8];
-   VARCHAR SQL_clave[20];   // modificar todas las contraseñas a 20.
+   VARCHAR SQL_rut[9];
+   VARCHAR SQL_clave[21]; 
    
    
    //peliculas
-   VARCHAR SQL_nombre[31];
-   VARCHAR SQL_genero[20];
-   VARCHAR SQL_pais[20];
-   VARCHAR SQL_anio[4];
-   VARCHAR SQL_stock[20];
-   VARCHAR SQL_precio[5];
+   VARCHAR SQL_nombre[21];
+   VARCHAR SQL_genero[21];
+   VARCHAR SQL_pais[21];
+   VARCHAR SQL_anio[5];
+   VARCHAR SQL_stock[21];
+   VARCHAR SQL_precio[6];
    
    
-   
-   int SQL_count;
+      int SQL_count;
 
 EXEC SQL END DECLARE SECTION;
 
@@ -44,9 +43,9 @@ EXEC SQL END DECLARE SECTION;
 // Metodo para conectarse a la BdD
 int SQLConectar() {
 
-    strcpy(SQL_dbname.arr, "transaccionales");
+    strcpy(SQL_dbname.arr, "b17957434_trans");
     SQL_dbname.len = strlen(SQL_dbname.arr);
-    strcpy(SQL_user.arr, "17957434");
+    strcpy(SQL_user.arr, "b17957434_trans");
     SQL_user.len = strlen(SQL_user.arr);
     strcpy(SQL_password.arr, "dalarcon");
     SQL_password.len = strlen(SQL_password.arr);
@@ -87,7 +86,7 @@ int main() {
         } texto;
     } mensaje, respuesta;
 
-    qid = msgget (5942016, IPC_CREAT|0666);
+    qid = msgget (666666, IPC_CREAT|0666);
     pid = getpid ();
 
     while(1){
@@ -123,12 +122,12 @@ int main() {
             if (strcmp(formulario, "ingpel")==0){
 
                 printf("   --------------------   \n   El proceso Es: Ingresar Pelicula \n   --------------------\n\n");
-                char nombre[20];
-                char genero[20];
-                char pais[20];
-                char anio[4];
-                char stock[20];
-                char precio[5];
+                char nombre[21];
+                char genero[21];
+                char pais[21];
+                char anio[5];
+                char stock[21];
+                char precio[6];
                 
             //Limpiamos los Strings
                 memset(nombre, 0 , sizeof nombre);
@@ -145,14 +144,19 @@ int main() {
             //Guardamos la variable en la estructura 
                 sprintf(SQL_nombre.arr,"%s", nombre);
                 SQL_nombre.len=strlen(SQL_nombre.arr);
+
                 sprintf(SQL_genero.arr,"%s", genero);
                 SQL_genero.len=strlen(SQL_genero.arr);
+
                 sprintf(SQL_pais.arr,"%s", pais);
                 SQL_pais.len=strlen(SQL_pais.arr);
+
                 sprintf(SQL_anio.arr,"%s", anio);
                 SQL_anio.len=strlen(SQL_anio.arr);
+
                 sprintf(SQL_stock.arr,"%s", stock);
                 SQL_stock.len=strlen(SQL_stock.arr);
+
                 sprintf(SQL_precio.arr,"%s", precio);
                 SQL_precio.len=strlen(SQL_precio.arr);
                 
@@ -193,8 +197,8 @@ int main() {
 
 
                // Insertamos la película en la base de datos
-                    EXEC SQL INSERT INTO pelicula (nombre, genero, pais, 
-anio, stock, precio) VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
+                    EXEC SQL INSERT INTO PELICULA (nombre, genero, pais,anio, stock, precio) 
+VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
                     EXEC SQL COMMIT;
 
                 // Revisar en caso de error en la consulta
@@ -264,7 +268,7 @@ WHERE
 
 
                // Insertamos el rut en la base de datos
-                    EXEC SQL INSERT INTO login (rut, clave) VALUES (:SQL_rut,:SQL_clave);
+                    EXEC SQL INSERT INTO usuario (rut, clave) VALUES (:SQL_rut,:SQL_clave);
                     EXEC SQL COMMIT;
 
                 // Revisar en caso de error en la consulta
@@ -299,11 +303,11 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
                                 printf("   --------------------   \n   Registrar personas.\n   --------------------\n\n");
 
-                                char nombre[20];
-                                char apellido[20];
-                                char rut[8];
-                                char mail[50];
-                                char clave[20];
+                                char nombre[21];
+                                char apellido[21];
+                                char rut[9];
+                                char mail[51];
+                                char clave[21];
                                 
                              
                                 //Limpiamos los Strings
@@ -340,16 +344,16 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 								SQL_clave.len=strlen(SQL_clave.arr);
 
 				// Verificamos si el usuario ya esta registrado
-				EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM EJEMPLO WHERE RUT=:SQL_rut;
+				EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM USUARIO WHERE RUT=:SQL_rut;
 
 				if( SQL_count != 0) {
 					
 					printf("El alumno ya fue registrado\n");
 					
-					EXEC SQL SELECT nombre INTO :SQL_nombre_usuario FROM usuario WHERE rut=:SQL_rut; 
+					EXEC SQL SELECT nombre INTO :SQL_nombre_usuario FROM USUARIO WHERE rut=:SQL_rut; 
 					EXEC SQL COMMIT;
 					
-printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut.arr);
+  printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut.arr);
 
 					memset( &respuesta, 0, sizeof respuesta);
 					sprintf(respuesta.texto.datos, "%s", "01");
@@ -361,7 +365,16 @@ printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut
 
 
 					// Insertamos el alumno en la BdD
-					EXEC SQL INSERT INTO usuario (nombre,apellido,rut,clave,mail) VALUES (:SQL_nombre_usuario, :SQL_apellido, :SQL_rut, :SQL_clave, :SQL_mail);
+                       
+                      // printf("Nombre :s\n",SQL_nombre_usuario.arr);
+                       // printf("Apellido : s\n",SQL_apellido.arr);
+                       // printf("Rut : s\n", SQL_rut.arr);
+                       // printf("Mail :s\n",SQL_mail.arr);
+                       // printf("Clave : s\n",SQL_clave.arr);
+
+
+					EXEC SQL INSERT INTO USUARIO (rut,nombre,apellido,mail,clave) VALUES 
+(:SQL_rut,:SQL_nombre_usuario, :SQL_apellido,:SQL_mail, :SQL_clave);
 					EXEC SQL COMMIT;
 
 					// Revisar en caso de error en la consulta

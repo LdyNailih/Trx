@@ -14,12 +14,12 @@ struct trans
 void proceso (char *aci, struct trans *tx_in, struct trans *tx_out,
 struct trans *tx_sa)
 {
-    char nombre[20];
-    char genero[20];
-    char pais[20];
-    char anio[4];
-    char stock[20];
-    char precio[5];
+    char nombre[21];
+    char genero[21];
+    char pais[21];
+    char anio[5];
+    char stock[21];
+    char precio[6];
 
     memset(nombre, 0 , sizeof nombre);
     memset(genero, 0 , sizeof genero);
@@ -56,7 +56,7 @@ printf("Stock:  %s\n", stock); //ACAAAAA!!!!
                 } texto;
         } mensaje, respuesta;
 
-        qid = msgget(5942016, 0666);
+        qid = msgget(666666, 0666);
         pid = getpid();
 
    // Limpiamos la estructura del mensaje
@@ -64,7 +64,8 @@ printf("Stock:  %s\n", stock); //ACAAAAA!!!!
 
   // guardamos en la estructura mensaje lo que se quiere enviar 
         //al demonio
-        sprintf(mensaje.texto.dat, "%s%s%s%s%s%s", "ingpel" , nombre,
+        sprintf(mensaje.texto.dat, "%6s%s%s%s%s%s%s", "ingpel" , 
+nombre,
         genero, pais, anio, stock, precio);
 
         mensaje.mtype = 1;
