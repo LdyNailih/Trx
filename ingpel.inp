@@ -1,6 +1,6 @@
 ID ingpel 900105 134 21
 fs 22 70
-opc debug
+#opc debug
 # ct inv
 box 00 00  24 80
 
@@ -27,7 +27,7 @@ ce  10  23  20 102 AN 0
 cf  11  05  07 Precio:
 ce  11  23  05 129 AN 0
 
-cm  15  10  21 0
+cm  15  10  02 000
 
 tm 01 18 Pelicula Ingresada
 tm 02 21 La Pelicula ya existe

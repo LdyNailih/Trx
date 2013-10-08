@@ -31,8 +31,17 @@ struct trans *tx_sa)
     sscanf(tx_in->datos,"%20c%20c%20c%4c%20c%5c", nombre, genero, 
     pais, anio, stock, precio);
 
-    tx_out->len = sprintf(tx_out->datos,"%s%s%s%s%s%s", nombre, genero,
-    pais, anio, stock, precio);
+    printf( "Llego desde el formulario: %s\n", tx_in->datos);
+
+printf("Nombre:  %s\n", nombre);
+printf("Genero:  %s\n", genero);
+printf("Pais:  %s\n", pais);
+printf("Anio:  %s\n", anio);
+printf("Stock:  %s\n", stock); //ACAAAAA!!!! 
+
+
+//    tx_out->len = sprintf(tx_out->datos,"%s%s%s%s%s%s", nombre, genero,
+  //  pais, anio, stock, precio);
 
 
 // Comunicacion con el Demonio 

@@ -37,7 +37,7 @@ struct trans *tx_sa)
                 } texto;
         } mensaje, respuesta;
 
-        qid = msgget(420500, 0666);
+        qid = msgget(5942016, 0666);
         pid = getpid();
 
    // Limpiamos la estructura del mensaje
