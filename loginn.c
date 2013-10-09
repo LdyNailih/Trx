@@ -46,7 +46,7 @@ struct trans *tx_sa)
   // guardamos en la estructura mensaje lo que se quiere enviar 
         //al demonio
         sprintf(mensaje.texto.dat, "%6s%s%s", "loginn" , rut, clave);
-
+printf("lalala\n");
         mensaje.mtype = 1;
         mensaje.texto.pid = pid;
         msgsnd(qid, &mensaje, strlen(mensaje.texto.dat)+4,0);
