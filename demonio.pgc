@@ -252,13 +252,22 @@ VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
                     EXEC SQL SELECT clave FROM usuario WHERE rut=:SQL_rut;
                     if(strcmp(SQL_clave.arr, clave) == 0)
                     {
+                    printf("Exito");
+                        memset( &respuesta, 0, sizeof respuesta);
                         sprintf(respuesta.texto.datos,"%s","02");
-                        printf("Exito");
+                        
+                         respuesta.mtype=pid_destino;
+                    respuesta.texto.pid=pid;
+        msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
                     }
                     else
                     {
+                    printf("Usuario/Clave no coinciden");
+                    memset( &respuesta, 0, sizeof respuesta);
                     sprintf(respuesta.texto.datos,"%s","01");
-                        printf("Usuario/Clave no coinciden");
+                         respuesta.mtype=pid_destino;
+                    respuesta.texto.pid=pid;
+        msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
                     }
                 }
 
