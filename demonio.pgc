@@ -245,12 +245,12 @@ VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
 
              //Verificamos si el usuario ya existe
                 EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario WHERE rut =:SQL_rut;
-                memset(&respuesta,0,sizeof respuesta);
+             //   memset(&respuesta,0,sizeof respuesta);
 
                 if(SQL_count != 0)
                 {
-                    EXEC SQL SELECT clave FROM usuario WHERE rut=:SQL_rut;
-                    if(strcmp(SQL_clave.arr, clave) == 0)
+                    EXEC SQL SELECT rut INTO :SQL_clave FROM usuario WHERE clave =:SQL_clave;
+                    if(strcmp(SQL_rut.arr, rut) == 0)
                     {
                     printf("Exito");
                         memset( &respuesta, 0, sizeof respuesta);
