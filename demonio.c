@@ -423,66 +423,26 @@ int main() {
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 249 "demonio.pgc"
+#line 247 "demonio.pgc"
 
+                memset(&respuesta,0,sizeof respuesta);
 
-                if( SQL_count != 0)
+                if(SQL_count == 0)
                 {
-                    printf("Rut ya existente\n");
-                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from usuario where rut = $1 ", 
-	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
-	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
-	ECPGt_varchar,&(SQL_nombre),(long)21,(long)1,sizeof(struct varchar_9), 
-	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 256 "demonio.pgc"
-
-
-                    printf("Datos: Rut:%s",SQL_rut.arr);
-           printf("Clave:  *****");
-
+                
+                    printf("Faltan campos");
                     memset( &respuesta, 0, sizeof respuesta);
-                    sprintf(respuesta.texto.datos, "%s", "02");
+                    sprintf(respuesta.texto.datos, "%s", "03");
                     respuesta.mtype = pid_destino;
                     respuesta.texto.pid = pid;
                     msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+                   // printf("respuesta.texto.datos");
+                    printf("LALALALALALALALALALALALALA");
                 }
-                else{
 
 
-               // Insertamos el rut en la base de datos
-                    { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "insert into usuario ( rut , clave ) values ( $1  , $2  )", 
-	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
-	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
-	ECPGt_varchar,&(SQL_clave),(long)21,(long)1,sizeof(struct varchar_8), 
-	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 271 "demonio.pgc"
-
-                    { ECPGtrans(__LINE__, NULL, "commit");}
-#line 272 "demonio.pgc"
 
 
-                // Revisar en caso de error en la consulta
-                    if(sqlca.sqlcode != 0) {
-                     printf("\nERROR en la consulta SQL\n\n");
-                     memset(&respuesta,0,sizeof respuesta);
-                        sprintf(respuesta.texto.datos,"%s", "03");
-                        respuesta.mtype=pid_destino;
-                        respuesta.texto.pid=pid;
-                    
-msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
-
-                    } else {
-
-                   printf("\nRut con exito\n\n");
-                   memset(&respuesta,0,sizeof respuesta);
-                    sprintf(respuesta.texto.datos, "%s","01");
-                    respuesta.mtype=pid_destino;
-                    respuesta.texto.pid=pid;
-        msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
-
-                } // Fin else
-
-            }
 			} //Fin Formulario
 			
 			/*************************************************************************
@@ -539,22 +499,22 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 347 "demonio.pgc"
+#line 317 "demonio.pgc"
 
 
 				if( SQL_count != 0) {
 					
-					printf("El alumno ya fue registrado\n");
+					printf(" ya fue registrado\n");
 					
 					{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre from USUARIO where rut = $1 ", 
 	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_varchar,&(SQL_nombre_usuario),(long)21,(long)1,sizeof(struct varchar_4), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 353 "demonio.pgc"
+#line 323 "demonio.pgc"
  
 					{ ECPGtrans(__LINE__, NULL, "commit");}
-#line 354 "demonio.pgc"
+#line 324 "demonio.pgc"
 
 					
   printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut.arr);
@@ -588,10 +548,10 @@ msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_varchar,&(SQL_clave),(long)21,(long)1,sizeof(struct varchar_8), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 377 "demonio.pgc"
+#line 347 "demonio.pgc"
 
 					{ ECPGtrans(__LINE__, NULL, "commit");}
-#line 378 "demonio.pgc"
+#line 348 "demonio.pgc"
 
 
 					// Revisar en caso de error en la consulta
@@ -655,7 +615,7 @@ sprintf(respuesta.texto.datos, "%s", "02");
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
-#line 436 "demonio.pgc"
+#line 406 "demonio.pgc"
 
 				
                                 if( SQL_count != 0) {
@@ -665,10 +625,10 @@ sprintf(respuesta.texto.datos, "%s", "02");
                                         { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "delete from USUARIO where rut = $1 ", 
 	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
-#line 442 "demonio.pgc"
+#line 412 "demonio.pgc"
 
                                         { ECPGtrans(__LINE__, NULL, "commit");}
-#line 443 "demonio.pgc"
+#line 413 "demonio.pgc"
 
 										
 									
@@ -694,7 +654,198 @@ sprintf(respuesta.texto.datos, "%s", "02");
 
 			}//Fin Formulario eliusu
 
-}
+/*************************************************************************
+				Buscar Personas 
+*************************************************************************/
+
+                        if (strcmp(formulario, "bususu")==0){
+
+                                printf("   --------------------   \n   Te encontrare gente! \n   --------------------\n\n");
+
+                                char rut[9];
+                             
+                                //Limpiamos los Strings
+
+                                memset (rut, 0, sizeof rut);
+                                
+                                //Recibimos los datos desde el .c
+
+                                printf("Recibi: %s\n",mensaje.texto.datos);
+                                sscanf(mensaje.texto.datos, "%6c%8c", formulario, rut);
+                             
+                             //Guardamos la variable en la estructura arr de los char
+								
+								sprintf(SQL_rut.arr,"%s", rut);
+								SQL_rut.len=strlen(SQL_rut.arr);
+								
+								printf("El Rut de la Persona es: %s\n", SQL_rut.arr);
+								
+				// Verificamos si el rut existe.
+				
+								{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from USUARIO where rut = $1 ", 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
+	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
+#line 466 "demonio.pgc"
+
+				
+                                if( SQL_count != 0) {
+                                    //Obtenemos datos del cliente que buscamos 
+                                        
+								// buscamos al super usuario de la temuer
+								{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select nombre , apellido , mail , clave from USUARIO where rut = $1 ", 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
+	ECPGt_varchar,&(SQL_nombre_usuario),(long)21,(long)1,sizeof(struct varchar_4), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
+	ECPGt_varchar,&(SQL_apellido),(long)21,(long)1,sizeof(struct varchar_5), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
+	ECPGt_varchar,&(SQL_mail),(long)51,(long)1,sizeof(struct varchar_6), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
+#line 472 "demonio.pgc"
+ 
+								{ ECPGtrans(__LINE__, NULL, "commit");}
+#line 473 "demonio.pgc"
+
+					
+						        printf("Nombre es: %s\n", SQL_nombre_usuario.arr);
+                                printf("Apellido es: %s\n", SQL_apellido.arr);
+                                printf("Rut es: %s\n", SQL_rut.arr);
+                                printf("Mail es: %s\n", SQL_mail.arr);
+                                
+		
+									
+                              // mandamos la informacion al C. 									
+									
+									memset( &respuesta, 0, sizeof respuesta);
+                                        sprintf(respuesta.texto.datos, "%2s%20s%20s%50s", "02",SQL_nombre_usuario.arr, SQL_apellido.arr, SQL_mail.arr);
+										respuesta.mtype = pid_destino;
+                                        respuesta.texto.pid = pid;
+                                        msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);										
+									
+									//sprintf(respuesta.texto.datos,"%2s%20s%10d%10d%9d","01",SQL_nombrepro.arr,SQL_precio,SQL_cantidad,SQL_rutv);
+									
+										printf("\n  Muestrame la infor ! \n\n");
+					
+					} else {
+						
+						printf("\n  Usuario  no esta registrado \n\n");
+
+						memset(&respuesta,0,sizeof respuesta);
+                        sprintf(respuesta.texto.datos, "%s", "01");
+						respuesta.mtype=pid_destino;
+                        respuesta.texto.pid=pid;
+                        msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+
+
+				} // Fin else
+
+			}//Fin Formulario bususu
+			
+/*************************************************************************
+                       Modificar usuario
+*************************************************************************/
+
+                        if (strcmp(formulario, "modusu")==0){
+
+                                printf("   --------------------   \n   Modificar Usuario \n   --------------------\n\n");
+
+                                char nombre[21];
+                                char apellido[21];
+                                char rut[9];
+                                char mail[51];
+                                char clave[21];
+
+                                //Limpiamos los Strings
+                                memset (nombre, 0, sizeof nombre);
+                                memset (apellido, 0, sizeof apellido);
+                                memset (rut, 0, sizeof rut);
+                                memset (mail, 0, sizeof mail);
+                                memset (clave, 0, sizeof clave);
+                                                     
+
+                                //Recibimos los datos desde el .c
+
+                                printf("Recibi: %s\n",mensaje.texto.datos);
+                                sscanf(mensaje.texto.datos, "%6c%8c%20c%20c%50c%20c", formulario, rut, nombre, apellido, mail, clave);
+                             
+                             //Guardamos la variable en la estructura arr de los char
+								sprintf(SQL_rut.arr,"%s", rut);
+								SQL_rut.len=strlen(SQL_rut.arr);
+								
+								sprintf(SQL_nombre_usuario.arr,"%s", nombre);
+								SQL_nombre_usuario.len=strlen(SQL_nombre_usuario.arr);
+								
+								sprintf(SQL_apellido.arr,"%s", apellido);
+								SQL_apellido.len=strlen(SQL_apellido.arr);
+								
+								sprintf(SQL_mail.arr,"%s", mail);
+								SQL_mail.len=strlen(SQL_mail.arr);
+								
+								sprintf(SQL_clave.arr,"%s", clave);
+								SQL_clave.len=strlen(SQL_clave.arr);
+
+
+                                // Verificamos si el usuario ya esta registrado
+                                { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "select count ( * ) from usuario where rut = $1 ", 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
+	ECPGt_int,&(SQL_count),(long)1,(long)1,sizeof(int), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
+#line 554 "demonio.pgc"
+
+
+                                if( SQL_count != 0) {
+
+                                        { ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "update usuario set nombre = SQL_nombre_usuario , apellido = SQL_apellido , mail = SQL_mail , clave = SQL_clave where rut = $1 ", 
+	ECPGt_varchar,&(SQL_rut),(long)9,(long)1,sizeof(struct varchar_7), 
+	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
+#line 558 "demonio.pgc"
+
+                                        { ECPGtrans(__LINE__, NULL, "commit");}
+#line 559 "demonio.pgc"
+
+
+                                        // Revisar en caso de error en la consulta
+                                        if(sqlca.sqlcode != 0) {
+
+                                                printf("\nERROR en la Actualizacion SQL\n\n");
+
+                                                memset(&respuesta,0,sizeof respuesta);
+                                                sprintf(respuesta.texto.datos, "%s", "04");
+                                                respuesta.mtype=pid_destino;
+                                                respuesta.texto.pid=pid;
+                                                msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
+
+                                        } else {
+
+                                                printf("\n Actualizado con exito\n\n");
+
+                                                memset( &respuesta, 0, sizeof respuesta);
+                                                sprintf(respuesta.texto.datos, "%s", "03");
+                                                respuesta.mtype = pid_destino;
+                                                respuesta.texto.pid = pid;
+                                                msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+
+                                        }                                                                                                                                                            
+
+                                }else{
+
+                                        printf("No existe el Usuario\n");
+
+                                        memset( &respuesta, 0, sizeof respuesta);
+                                        sprintf(respuesta.texto.datos, "%2s", "01");
+                                        respuesta.mtype = pid_destino;
+                                        respuesta.texto.pid = pid;
+                                        msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+
+                                } // Fin else
+
+                        }//Fin Formulario modusu
+			
+			
+			} // estos parentesis no se mueven al agregar  formulario (  U CANT TOUCH THIS (8)! )
 }
 
 }

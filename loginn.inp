@@ -17,10 +17,9 @@ ce 08 14 20 08 AN 0
 
 cm  10  15  02 0
 
-tm 01 28 Usuario no existe
-tm 02 18 Clave incorrecto
-tm 03 13 Faltan campos
-tm 04 05   asdf
+tm 01 27 Usuario/Clave no coinciden
+tm 02 05 Exito
+tm 03 05 ERROR
 
 ff
 
