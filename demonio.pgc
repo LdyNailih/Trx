@@ -244,7 +244,7 @@ VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
                 SQL_clave.len=strlen(SQL_clave.arr);
 
              //Verificamos si el usuario ya existe
-                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario WHERE :rut =:SQL_rut;
+                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario WHERE rut =:SQL_rut;
                 memset(&respuesta,0,sizeof respuesta);
 
                 if(SQL_count == 0)
