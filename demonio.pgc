@@ -250,7 +250,7 @@ VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
                 if(SQL_count != 0)
                 {
                     EXEC SQL SELECT clave FROM usuario WHERE rut=:SQL_rut;
-                    if(strcmp(SQL_clave.arr, clave) == 0 || strcmp(SQL_rut.arr)==0)
+                    if(strcmp(SQL_clave.arr, clave) == 0)
                     {
                         sprintf(respuesta.texto.datos,"%s","02");
                         printf("Exito");
