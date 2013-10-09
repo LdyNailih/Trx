@@ -9,17 +9,17 @@ cf 03 34 21 Modificar Usuario
 cf 04 34 21 +++++++++++++++++
 
 cf 07 05 05 Rut:
-cd 07 20 08 002 AN 0
+cd 07 20 08 000  002
 cf 07 30 35 Ex: 17083021 (sin puntos ni guion)
 
 cf 08 05 08 Nombre:
-cd 08 20 20 010 AN 0
+cd 08 20 20 008  010
   
 cf 09 05 10 Apellido: 
-cd 09 20 20 030 AN 0
+cd 09 20 20 028  030
 
 cf 10 05 06 Mail:
-cd 10 20 50 050 AN 0
+cd 10 20 50 048  050
 
 cm 15 10 02 000
 
