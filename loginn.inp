@@ -1,4 +1,4 @@
-ID loginn 900108 33 28
+ID loginn 900108 36 28
 fs 22 70
 #opc debug
 # ct inv
@@ -13,12 +13,14 @@ cf 07 05 04 Rut:
 ce 07 14 08 000 AN 0
 
 cf 08 05 07 Clave:
-ce 08 14 20 13 AN 0
+ce 08 14 20 08 AN 0
 
-cm  02  05  02 0
+cm  10  15  02 0
 
-tm 10 28 Usuario no existe
-tm 10 18 Clave incorrecto
+tm 01 28 Usuario no existe
+tm 02 18 Clave incorrecto
+tm 03 13 Faltan campos
+tm 04 05   asdf
 
 ff
 

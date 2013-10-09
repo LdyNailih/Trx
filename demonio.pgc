@@ -244,55 +244,31 @@ VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
                 SQL_clave.len=strlen(SQL_clave.arr);
 
              //Verificamos si el usuario ya existe
-                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario
-WHERE
-                rut=:SQL_rut;
+                EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario WHERE :rut =:SQL_rut;
+                memset(&respuesta,0,sizeof respuesta);
 
-                if( SQL_count != 0)
+                if(SQL_count == 0)
                 {
-                    printf("Rut ya existente\n");
-                    EXEC SQL SELECT nombre INTO :SQL_nombre FROM usuario 
-WHERE
-                    rut=:SQL_rut;
+                    sprintf(respuesta.texto.datos,"%2s","03");
+                    printf("Faltan campos\n\n");
 
-                    printf("Datos: Rut:%s",SQL_rut.arr);
-           printf("Clave:  *****");
-
-                    memset( &respuesta, 0, sizeof respuesta);
-                    sprintf(respuesta.texto.datos, "%s", "02");
-                    respuesta.mtype = pid_destino;
-                    respuesta.texto.pid = pid;
-                    msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
                 }
-                else{
+                else 
+                {
+                    EXEC SQL SELECT clave INTO :SQL_clave FROM usuario WHERE rut = :SQL_rut;
+                    if(strcmp(SQL_clave.arr, clave) == 0)
+                    {
+                        sprintf(respuesta.texto.dato,"%2s", "04");
+                    }
+                    else
+                    {
+                        sprintf(respuesta.texto.dato,"%2s", "03");
+                    }
+                }
 
 
-               // Insertamos el rut en la base de datos
-                    EXEC SQL INSERT INTO usuario (rut, clave) VALUES (:SQL_rut,:SQL_clave);
-                    EXEC SQL COMMIT;
 
-                // Revisar en caso de error en la consulta
-                    if(sqlca.sqlcode != 0) {
-                     printf("\nERROR en la consulta SQL\n\n");
-                     memset(&respuesta,0,sizeof respuesta);
-                        sprintf(respuesta.texto.datos,"%s", "03");
-                        respuesta.mtype=pid_destino;
-                        respuesta.texto.pid=pid;
-                    
-msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
 
-                    } else {
-
-                   printf("\nRut con exito\n\n");
-                   memset(&respuesta,0,sizeof respuesta);
-                    sprintf(respuesta.texto.datos, "%s","01");
-                    respuesta.mtype=pid_destino;
-                    respuesta.texto.pid=pid;
-        msgsnd(qid,&respuesta,strlen(respuesta.texto.datos)+4,0);
-
-                } // Fin else
-
-            }
 			} //Fin Formulario
 			
 			/*************************************************************************
