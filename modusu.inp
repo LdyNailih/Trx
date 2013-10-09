@@ -1,0 +1,30 @@
+ID modusu 900106 52 20
+fs 22 70
+#ocp debug
+#ct inv
+box 00 00 24 80
+# Formulario de buscar usuario
+
+cf 03 34 21 Modificar Usuario
+cf 04 34 21 +++++++++++++++++
+
+cf 07 05 05 Rut:
+cd 07 20 08 000 AN 0
+cf 07 30 35 Ex: 17083021 (sin puntos ni guion)
+
+cf 08 05 08 Nombre:
+cd 08 20 20 002 AN 0
+  
+cf 09 05 10 Apellido: 
+cd 09 20 20 022 AN 0
+
+cf 10 05 06 Mail:
+cd 10 20 50 042 AN 0
+
+cm 15 10 02 000
+
+tm 01 18 Usuario no Existe!
+tm 02 11 Encontrado!
+tm 03 11 Modificado!
+
+ff
