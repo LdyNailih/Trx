@@ -496,29 +496,32 @@ sprintf(respuesta.texto.datos, "%s", "02");
 								EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM USUARIO WHERE rut=:SQL_rut;
 				
                                 if( SQL_count != 0) {
-                                    //Obtenemos datos del cliente que buscamos limpiamos
+                                    //Obtenemos datos del cliente que buscamos 
                                         
 								// buscamos al super usuario de la temuer
-								EXEC SQL SELECT nombre, apellido, mail, clave INTO :SQL_nombre_usuario, :SQL_apellido , :SQL_mail, :SQL_clave FROM USUARIO WHERE rut=:SQL_rut; 
+								EXEC SQL SELECT nombre, apellido, mail, clave INTO :SQL_nombre_usuario, :SQL_apellido , :SQL_mail FROM USUARIO WHERE rut=:SQL_rut; 
 								EXEC SQL COMMIT;
 					
-						printf("Y sus datos son: Nombre:%s, Rut:%s\n\n", SQL_nombre_usuario.arr, SQL_rut.arr);
-								
-								//Eliminamos el cliente de la BdD
-                                //       EXEC SQL DELETE FROM USUARIO WHERE rut=:SQL_rut;
-                                //       EXEC SQL COMMIT;
-										
+						        printf("Nombre es: %s\n", SQL_nombre_usuario.arr);
+                                printf("Apellido es: %s\n", SQL_apellido.arr);
+                                printf("Rut es: %s\n", SQL_rut.arr);
+                                printf("Mail es: %s\n", SQL_mail.arr);
+                                
+		
 									
+                              // mandamos la informacion al C. 									
 									
 									memset( &respuesta, 0, sizeof respuesta);
-									sprintf(respuesta.texto.datos, "%s", "01");
-									respuesta.mtype = pid_destino;
-									respuesta.texto.pid = pid;
-									msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+                                        sprintf(respuesta.texto.datos, "-%s-%s-%s-%s", "02",SQL_nombre_usuario.arr, SQL_apellido.arr, SQL_mail.arr);
+                                        respuesta.mtype = pid_destino;
+                                        respuesta.texto.pid = pid;
+                                        msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+										
+										printf("\n  Muestrame la infor ! \n\n");
 					
 					} else {
 						
-						printf("\n  Ese usuario no esta registrado \n\n");
+						printf("\n  Usuario  no esta registrado \n\n");
 
 						memset(&respuesta,0,sizeof respuesta);
                         sprintf(respuesta.texto.datos, "%s", "01");

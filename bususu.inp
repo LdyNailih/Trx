@@ -24,5 +24,6 @@ cs 10 20 50 042 AN 0
 
 cm 15 10 02 000
 tm 01 18 Usuario no Existe!
+tm 02 11 Encontrado!
 
 ff
