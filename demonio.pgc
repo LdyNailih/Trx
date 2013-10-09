@@ -247,22 +247,17 @@ VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
                 EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario WHERE rut =:SQL_rut;
                 memset(&respuesta,0,sizeof respuesta);
 
-                if(SQL_count != 0)
+                if(SQL_count == 0)
                 {
-                 EXEC SQL SELECT clave INTO :SQL_clave FROM usuario WHERE rut = :SQL_rut;
-                    if(strcmp(SQL_clave.arr, clave) == 0)
-                    {
-                        sprintf(respuesta.texto.datos,"%2s", "04");
-                    }
-                    else
-                    {
-                        sprintf(respuesta.texto.datos,"%2s", "03");
-                    }
-                }
-                else 
-                {
-                   sprintf(respuesta.texto.datos,"%s","03");
-                    printf("Faltan campos\n\n");
+                
+                    printf("Faltan campos");
+                    memset( &respuesta, 0, sizeof respuesta);
+                    sprintf(respuesta.texto.datos, "%s", "03");
+                    respuesta.mtype = pid_destino;
+                    respuesta.texto.pid = pid;
+                    msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
+                   // printf("respuesta.texto.datos");
+                    printf("LALALALALALALALALALALALALA");
                 }
 
 
