@@ -512,11 +512,13 @@ sprintf(respuesta.texto.datos, "%s", "02");
                               // mandamos la informacion al C. 									
 									
 									memset( &respuesta, 0, sizeof respuesta);
-                                        sprintf(respuesta.texto.datos, "-%s-%s-%s-%s", "02",SQL_nombre_usuario.arr, SQL_apellido.arr, SQL_mail.arr);
-                                        respuesta.mtype = pid_destino;
+                                        sprintf(respuesta.texto.datos, "%2s%20s%20s%50s", "02",SQL_nombre_usuario.arr, SQL_apellido.arr, SQL_mail.arr);
+										respuesta.mtype = pid_destino;
                                         respuesta.texto.pid = pid;
-                                        msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);
-										
+                                        msgsnd(qid, &respuesta, strlen(respuesta.texto.datos)+4,0);										
+									
+									//sprintf(respuesta.texto.datos,"%2s%20s%10d%10d%9d","01",SQL_nombrepro.arr,SQL_precio,SQL_cantidad,SQL_rutv);
+									
 										printf("\n  Muestrame la infor ! \n\n");
 					
 					} else {

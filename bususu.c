@@ -58,7 +58,7 @@ int qid,pid;
 	// en tx out se debe dejar la tx se salida
 	tx_out->len= sprintf (tx_out->datos,"%s", respuesta.texto.dat);
 
-
+ printf("El mensaje que sale del formulario es: %s\n", tx_out->datos);
 }
 
 
