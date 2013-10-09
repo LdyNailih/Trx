@@ -247,23 +247,22 @@ VALUES (:SQL_nombre,:SQL_genero,:SQL_pais,:SQL_anio,:SQL_stock,:SQL_precio);
                 EXEC SQL SELECT COUNT(*) INTO :SQL_count FROM usuario WHERE rut =:SQL_rut;
                 memset(&respuesta,0,sizeof respuesta);
 
-                if(SQL_count == 0)
+                if(SQL_count != 0)
                 {
-                    sprintf(respuesta.texto.datos,"%2s","03");
-                    printf("Faltan campos\n\n");
-
-                }
-                else 
-                {
-                    EXEC SQL SELECT clave INTO :SQL_clave FROM usuario WHERE rut = :SQL_rut;
+                 EXEC SQL SELECT clave INTO :SQL_clave FROM usuario WHERE rut = :SQL_rut;
                     if(strcmp(SQL_clave.arr, clave) == 0)
                     {
-                        sprintf(respuesta.texto.dato,"%2s", "04");
+                        sprintf(respuesta.texto.datos,"%2s", "04");
                     }
                     else
                     {
-                        sprintf(respuesta.texto.dato,"%2s", "03");
+                        sprintf(respuesta.texto.datos,"%2s", "03");
                     }
+                }
+                else 
+                {
+                   sprintf(respuesta.texto.datos,"%s","03");
+                    printf("Faltan campos\n\n");
                 }
 
 
